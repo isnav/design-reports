@@ -18,7 +18,7 @@ This is a personal reference, but if you spot something worth adding or a source
 
 ---
 
-1. [Building a Design Team](design-playbooks.html)
+1. [Building a Design Team in the Age of AI](design-playbooks.html)
 How are design teams actually changing in the age of AI? This research pulls together 130+ sources to find out: what's happening to design roles as AI tools commoditize production work, how companies like Anthropic, Vercel, and Notion are dissolving the design-engineering boundary, why IDEO collapsed while demand for design skills hit #1 in AI job listings, what the "builder" archetype replacing traditional specialists looks like, and what all of this means for anyone building or leading a design team today.
 
 2. [Proving Design's Worth](design-value-impact.html)
