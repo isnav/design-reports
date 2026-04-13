@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design in the Age of AI — Combined Strategic Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FAFAF8;--surface:#FFF;--text:#111;--text-2:#555;--text-3:#888;--accent:#C23616;--accent-soft:#FDF0ED;--blue:#1A5276;--blue-soft:#EBF5FB;--green:#1E6B4A;--green-soft:#E8F6F0;--purple:#5B2C8C;--purple-soft:#F3ECF9;--amber:#7D5A00;--amber-soft:#FFF8E1;--border:#E5E3DF;--border-light:#F0EEEA;--shadow:0 1px 3px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.03)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:1.031rem;line-height:1.7;-webkit-font-smoothing:antialiased}
+.nav{position:sticky;top:0;z-index:100;background:rgba(250,250,248,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 40px;display:flex;align-items:center;height:56px;gap:20px}
+.nav-brand{font-family:'Instrument Serif',serif;font-size:1.062rem;white-space:nowrap}
+.nav-links{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{color:var(--text-3);text-decoration:none;font-size:0.781rem;font-weight:500;padding:6px 11px;border-radius:6px;white-space:nowrap;transition:all .2s;letter-spacing:.03em;text-transform:uppercase}
+.nav-links a:hover{color:var(--text);background:rgba(0,0,0,.04)}
+.container{max-width:1200px;margin:0 auto;padding:0 40px}
+.cover{padding:72px 0 56px;border-bottom:1px solid var(--border)}
+.cover-eyebrow{font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:20px}
+.cover h1{font-family:'Instrument Serif',serif;font-size:clamp(2.125rem,5vw,3.5rem);line-height:1.08;letter-spacing:-.03em;max-width:820px;margin-bottom:20px}
+.cover h1 em{font-style:italic;color:var(--accent)}
+.cover-sub{font-size:1.125rem;color:var(--text-2);max-width:660px;line-height:1.7;font-weight:300}
+.cover-meta{margin-top:28px;display:flex;gap:28px;flex-wrap:wrap}
+.cover-stat-num{font-family:'Instrument Serif',serif;font-size:1.875rem;line-height:1}
+.cover-stat-label{font-size:0.719rem;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.tier{padding:48px 0 16px;border-bottom:2px solid var(--text)}
+.tier-label{font-family:'JetBrains Mono',monospace;font-size:0.688rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3);margin-bottom:6px}
+.tier h2{font-family:'Instrument Serif',serif;font-size:clamp(1.75rem,3.8vw,2.625rem);line-height:1.15;letter-spacing:-.02em}
+.tier p{font-size:0.969rem;color:var(--text-2);max-width:600px;margin-top:6px}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;padding:32px 0}
+.stat-card{background:var(--surface);border:1px solid var(--border-light);border-radius:12px;padding:22px;box-shadow:var(--shadow)}
+.stat-card-num{font-family:'Instrument Serif',serif;font-size:2.375rem;line-height:1;letter-spacing:-.03em}
+.stat-card-num.red{color:var(--accent)}.stat-card-num.blue{color:var(--blue)}.stat-card-num.green{color:var(--green)}.stat-card-num.purple{color:var(--purple)}.stat-card-num.amber{color:var(--amber)}
+.stat-card-body{font-size:0.875rem;color:var(--text-2);margin-top:8px;line-height:1.5}
+.stat-card-source{font-size:0.719rem;color:var(--accent);margin-top:6px}.stat-card-source a{color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--accent)}.stat-card-source a:hover{border-bottom-style:solid}
+.big-quote{padding:40px 0;border-bottom:1px solid var(--border-light)}
+.big-quote blockquote{font-family:'Instrument Serif',serif;font-size:clamp(1.375rem,3vw,2.25rem);line-height:1.3;letter-spacing:-.02em;max-width:800px}
+.big-quote blockquote em{font-style:italic}
+.big-quote cite{display:block;margin-top:12px;font-family:'Inter',sans-serif;font-size:0.844rem;color:var(--text-3);font-style:normal}
+.consideration{padding:32px 0;border-bottom:1px solid var(--border-light);display:grid;grid-template-columns:160px 1fr;gap:28px;align-items:start}
+.consideration-num{font-family:'Instrument Serif',serif;font-size:3.5rem;line-height:1;color:var(--border)}
+.consideration-label{font-family:'JetBrains Mono',monospace;font-size:0.656rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);margin-top:4px}
+.consideration h3{font-family:'Instrument Serif',serif;font-size:1.375rem;line-height:1.25;margin-bottom:8px}
+.consideration p{font-size:0.938rem;color:var(--text-2);line-height:1.7;max-width:660px}
+.consideration .hl{background:var(--accent-soft);border-left:3px solid var(--accent);padding:10px 14px;border-radius:0 8px 8px 0;margin-top:12px;font-size:0.875rem;max-width:660px}.consideration .hl strong{color:var(--accent)}
+.consideration .ex{background:var(--blue-soft);border-left:3px solid var(--blue);padding:10px 14px;border-radius:0 8px 8px 0;margin-top:8px;font-size:0.875rem;max-width:660px;color:var(--text-2)}.consideration .ex strong{color:var(--blue)}
+.consideration .own{background:var(--green-soft);border-left:3px solid var(--green);padding:10px 14px;border-radius:0 8px 8px 0;margin-top:8px;font-size:0.875rem;max-width:660px;color:var(--text-2)}.consideration .own strong{color:var(--green)}
+.phase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:12px;overflow:hidden;margin:28px 0 40px}
+.phase{background:var(--surface);padding:24px 22px}
+.phase-num{font-family:'JetBrains Mono',monospace;font-size:0.688rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-3);margin-bottom:6px}
+.phase h4{font-family:'Instrument Serif',serif;font-size:1.25rem;margin-bottom:8px;line-height:1.3}
+.phase p{font-size:0.875rem;color:var(--text-2);line-height:1.65}
+.summary-section{padding:28px 0;border-bottom:1px solid var(--border-light)}
+.summary-section h3{font-family:'Instrument Serif',serif;font-size:1.375rem;margin-bottom:10px}
+.summary-section p{font-size:0.938rem;color:var(--text-2);line-height:1.75;max-width:740px;margin-bottom:10px}
+.summary-section p strong{color:var(--text);font-weight:600}
+.inline-quote{color:var(--text);font-style:italic}
+.tension-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.tension{background:var(--surface);border:1px solid var(--border-light);border-radius:10px;padding:16px 20px}
+.tension h4{font-size:0.906rem;font-weight:600;margin-bottom:4px}
+.tension p{font-size:0.844rem;color:var(--text-2);line-height:1.6;margin:0}
+.commitments{background:var(--surface);border:1px solid var(--border-light);border-radius:12px;padding:24px;margin:16px 0 36px}
+.commitment{display:grid;grid-template-columns:32px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-light)}
+.commitment:last-child{border-bottom:none;padding-bottom:0}
+.commitment-num{font-family:'Instrument Serif',serif;font-size:1.5rem;color:var(--border);line-height:1.2}
+.commitment h4{font-size:0.938rem;font-weight:600;margin-bottom:2px}
+.commitment p{font-size:0.875rem;color:var(--text-2);line-height:1.6;margin:0}
+.detail-section{padding:32px 0 44px}
+.detail-section h3{font-family:'Instrument Serif',serif;font-size:1.375rem;margin-bottom:4px}
+.detail-intro{font-size:0.906rem;color:var(--text-2);margin-bottom:18px;max-width:700px}
+.company-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin:16px 0}
+.company-card{background:var(--surface);border:1px solid var(--border-light);border-radius:10px;padding:20px}
+.company-card h4{font-size:0.969rem;font-weight:600;margin-bottom:6px}
+.company-card h4 a{color:var(--text);text-decoration:none;border-bottom:1px dotted var(--border)}.company-card h4 a:hover{color:var(--accent);border-color:var(--accent)}
+.company-card p{font-size:0.875rem;color:var(--text-2);line-height:1.6}
+.company-card .cc-tag{font-family:'JetBrains Mono',monospace;font-size:0.656rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:6px}
+.company-card .cc-sources{margin-top:8px;font-size:0.719rem;color:var(--text-3)}.company-card .cc-sources a{color:var(--accent);text-decoration:none}.company-card .cc-sources a:hover{text-decoration:underline}
+.source-list{display:grid;gap:8px}
+.source{background:var(--surface);border:1px solid var(--border-light);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;transition:border-color .2s}
+.source:hover{border-color:var(--border)}
+.source-num{font-family:'JetBrains Mono',monospace;font-size:0.688rem;color:var(--text-3);padding-top:2px}
+.source h4{font-size:0.906rem;font-weight:600;line-height:1.4;margin-bottom:2px}
+.source h4 a{color:var(--text);text-decoration:none}.source h4 a:hover{color:var(--accent)}
+.source-meta{font-size:0.781rem;color:var(--text-3);margin-bottom:4px}
+.source-desc{font-size:0.844rem;color:var(--text-2);line-height:1.6}.source-desc strong{color:var(--text)}
+.source-tags{margin-top:6px;display:flex;gap:4px;flex-wrap:wrap}
+.stag{font-size:0.625rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:2px 6px;border-radius:3px;color:var(--text-3);background:var(--border-light)}
+.stag-roles{color:var(--purple);background:var(--purple-soft)}.stag-team{color:var(--blue);background:var(--blue-soft)}.stag-tools{color:var(--green);background:var(--green-soft)}.stag-quality{color:var(--accent);background:var(--accent-soft)}.stag-workflows{color:var(--amber);background:var(--amber-soft)}
+.quote-card{background:var(--surface);border:1px solid var(--border-light);border-radius:10px;padding:18px 22px;margin-bottom:8px}
+.quote-card blockquote{font-family:'Instrument Serif',serif;font-size:1.125rem;line-height:1.4}
+.quote-card cite{font-family:'Inter',sans-serif;font-size:0.781rem;color:var(--text-3);font-style:normal;display:block;margin-top:6px}
+.quote-card cite a{color:var(--accent);text-decoration:none}.quote-card cite a:hover{text-decoration:underline}
+.footer{padding:36px 0;border-top:1px solid var(--border);font-size:0.844rem;color:var(--text-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+/* CITATION TOOLTIP */
+.cref{position:relative;color:var(--accent);cursor:pointer;border-bottom:1px dotted var(--accent);text-decoration:none;font-weight:500}
+.cref:hover{border-bottom-style:solid}
+.cref .ctip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);width:360px;background:var(--text);color:#eee;border-radius:10px;padding:16px 18px;font-size:0.812rem;line-height:1.55;font-weight:400;box-shadow:0 8px 30px rgba(0,0,0,.2);z-index:200;pointer-events:none}
+.cref .ctip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--text)}
+.cref .ctip .ct-title{font-weight:600;color:#fff;margin-bottom:4px;font-size:0.781rem}
+.cref .ctip .ct-org{color:var(--accent);font-size:0.719rem;margin-bottom:6px}
+.cref .ctip .ct-quote{font-style:italic;color:#ccc}
+.cref:hover .ctip{display:block;pointer-events:auto}
+/* Ensure tooltips at edges don't overflow */
+.consideration .cref .ctip,.summary-section .cref .ctip{left:0;transform:none}
+.consideration .cref .ctip::after,.summary-section .cref .ctip::after{left:20px;transform:none}
+@media(max-width:900px){.container{padding:0 20px}.nav-inner{padding:0 16px}.consideration{grid-template-columns:1fr;gap:6px}.consideration-num{font-size:2.25rem}.phase-grid{grid-template-columns:1fr}.tension-grid{grid-template-columns:1fr}.source{grid-template-columns:1fr}.source-num{display:none}.company-grid{grid-template-columns:1fr}.cref .ctip{width:260px;left:0;transform:none}.cref .ctip::after{left:16px;transform:none}}
+@media(max-width:600px){.stat-grid{grid-template-columns:1fr 1fr}.cover-meta{gap:16px}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-inner">
+<div class="nav-brand">Design &times; AI</div>
+<div class="nav-links">
+<a href="#exec">Executive</a>
+<a href="#patterns">Patterns</a>
+<a href="#summary">Summary</a>
+<a href="#private">Private Sector</a>
+<a href="#sources">Sources</a>
+<a href="#quotes">Provocations</a>
+</div>
+</div></nav>
+<div class="container">
+<!-- COVER -->
+<section class="cover">
+<div class="cover-eyebrow">Combined Strategic Report / April 2026</div>
+<h1>Building a Design Team in the Age of <em>AI</em></h1>
+<p class="cover-sub">What 130+ sources across industry surveys, private sector case studies, government frameworks, and practitioner accounts tell us about how to build, structure, and inspire a forward-looking design team.</p>
+<div class="cover-meta">
+<div><div class="cover-stat-num">130+</div><div class="cover-stat-label">Sources analyzed</div></div>
+<div><div class="cover-stat-num">45</div><div class="cover-stat-label">Key sources cited</div></div>
+<div><div class="cover-stat-num">20+</div><div class="cover-stat-label">Companies profiled</div></div>
+<div><div class="cover-stat-num">3</div><div class="cover-stat-label">Planning horizons</div></div>
+</div>
+</section>
+
+<!-- TIER 1 -->
+<section class="tier" id="exec">
+<div class="tier-label">Tier 1</div>
+<h2>Executive View</h2>
+<p>The key signals for building a design team today. Hover on highlighted claims to see the source and key insight.</p>
+</section>
+
+<div class="big-quote">
+<blockquote>AI has inverted the ratio of judgment work to execution work. The cost of producing a screen has collapsed. The cost of building the <em>wrong thing</em> hasn't.</blockquote>
+<cite>Core finding across 130+ sources, 2024 to 2026</cite>
+</div>
+
+<div class="stat-grid">
+<div class="stat-card"><div class="stat-card-num red">52%</div><div class="stat-card-body">of AI builders say design is MORE important for AI products than traditional ones.</div><div class="stat-card-source"><a href="https://www.figma.com/reports/ai-2025/" target="_blank">Figma 2025 AI Report</a></div></div>
+<div class="stat-card"><div class="stat-card-num blue">$1B</div><div class="stat-card-body">ARR at Cursor with ~182 employees and no visible dedicated design team.</div><div class="stat-card-source"><a href="https://dnyuz.com/2025/12/11/cursor-launches-an-ai-coding-tool-for-designers/" target="_blank">Cursor / WIRED 2025</a></div></div>
+<div class="stat-card"><div class="stat-card-num green">#1</div><div class="stat-card-body">Design skills surpassed coding as the most in-demand skill in AI job listings.</div><div class="stat-card-source"><a href="https://adsknews.autodesk.com/en/news/ai-jobs-report/" target="_blank">Autodesk + GlobalData 2025</a></div></div>
+<div class="stat-card"><div class="stat-card-num purple">55%</div><div class="stat-card-body">of companies that executed AI-driven layoffs now regret it.</div><div class="stat-card-source"><a href="https://fortune.com/2025/05/09/klarna-ai-humans-return-on-investment/" target="_blank">Forrester via Fortune 2025</a></div></div>
+<div class="stat-card"><div class="stat-card-num red">64%</div><div class="stat-card-body">of product builders now identify with 2+ roles. Clearly defined roles are dissolving.</div><div class="stat-card-source"><a href="https://www.figma.com/blog/2025-shifting-roles-report/" target="_blank">Figma Shifting Roles 2025</a></div></div>
+<div class="stat-card"><div class="stat-card-num blue">~200</div><div class="stat-card-body">person design/research team at Microsoft AI going "AI-native" by end of fiscal year.</div><div class="stat-card-source"><a href="https://fortune.com/2025/12/03/microsoft-employees-ai-native-vp-design-liz-danzico/" target="_blank">Fortune / Dec 2025</a></div></div>
+<div class="stat-card"><div class="stat-card-num green">1:1</div><div class="stat-card-body">Designer-to-engineer ratio at Anthropic. Jenny Wen ships features with one engineer.</div><div class="stat-card-source"><a href="https://www.lennysnewsletter.com/p/the-design-process-is-dead" target="_blank">Lenny's Podcast / Mar 2026</a></div></div>
+<div class="stat-card"><div class="stat-card-num amber">$100M</div><div class="stat-card-body">IDEO revenue, down from $300M. Design thinking's home cut a third of staff.</div><div class="stat-card-source"><a href="https://fortune.com/asia/2025/04/30/ideo-names-mike-peng-ceo-ai-design-thinking/" target="_blank">Fortune / Apr 2025</a></div></div>
+<div class="stat-card"><div class="stat-card-num purple">43%</div><div class="stat-card-body">drop in entry-level design postings since 2022. Only 1% are internships.</div><div class="stat-card-source"><a href="https://mattstromawn.com/writing/product-design-talent-crisis/" target="_blank">Matt Strom-Awn 2025</a></div></div>
+<div class="stat-card"><div class="stat-card-num red">78%</div><div class="stat-card-body">say AI enhances efficiency, but only 32% trust AI output.</div><div class="stat-card-source"><a href="https://www.figma.com/reports/ai-2025/" target="_blank">Figma 2025 AI Report</a></div></div>
+</div>
+
+<!-- 7 CONSIDERATIONS with inline citations -->
+<div class="big-quote"><blockquote>Seven things to consider when building a design team today</blockquote></div>
+
+<div class="consideration">
+<div><div class="consideration-num">01</div><div class="consideration-label">Capability</div></div>
+<div>
+<h3>Design is a capability, not just a team</h3>
+<p>Design as a capability is growing while design as a distinct, siloed team is being reorganized. <a href="https://www.figma.com/blog/2025-shifting-roles-report/" target="_blank" class="cref">56% of non-designers now engage heavily in design tasks<span class="ctip"><span class="ct-title">Figma Shifting Roles Report 2025</span><span class="ct-org">Figma / 1,199 surveyed / Sep 2025</span><span class="ct-quote">"Clearly defined roles are giving way to something more fluid." 64% identify with 2+ roles.</span></span></a>. At <a href="https://www.canva.com/newsroom/news/canva-create-2025/" target="_blank" class="cref">Canva, 220M+ users do design work through AI tools<span class="ctip"><span class="ct-title">Canva Create 2025</span><span class="ct-org">Canva / 2025</span><span class="ct-quote">Magic Studio used 16B+ times. Positioned as "Creative Operating System" where non-designers do design work.</span></span></a>. At <a href="https://www.figma.com/blog/config-2025-press-release/" target="_blank" class="cref">Figma, a third of monthly active users self-identify as developers<span class="ctip"><span class="ct-title">Config 2025 Press Release</span><span class="ct-org">Figma / May 2025</span><span class="ct-quote">~30% of MAUs are developers. Two-thirds identify beyond traditional design roles.</span></span></a>.</p>
+<div class="ex"><strong>In practice:</strong> <a href="https://diginomica.com/checking-airbnbs-ai-thinking-ceo-brian-cheksy-has-no-reservations-about-prospects-success" target="_blank" class="cref">Airbnb's "triforce"<span class="ctip"><span class="ct-title">Airbnb's AI Thinking</span><span class="ct-org">Diginomica / 2025</span><span class="ct-quote">CEO Chesky: "We don't think AI search in travel is just text. It's going to have rich UI." EPD triforce gives design equal voice.</span></span></a> gives design equal voice. <a href="https://vercel.com/blog/design-engineering-at-vercel" target="_blank" class="cref">Vercel's Design Engineers<span class="ctip"><span class="ct-title">Design Engineering at Vercel</span><span class="ct-org">Vercel / 2025</span><span class="ct-quote">First-class role at $200K+ with dedicated Director. Write production code, shaders, 3D experiences. Three operating modes.</span></span></a> write production code, shaders, and 3D experiences. <a href="https://www.chatprd.ai/how-i-ai/how-notion-designs-with-ai-brian-lovins-prototype-playground-and-claude-code-workflows" target="_blank" class="cref">Notion's designers prototype directly in production<span class="ctip"><span class="ct-title">Notion Prototype Playground</span><span class="ct-org">Brian Lovin / How I AI / 2025</span><span class="ct-quote">Shared Next.js repo + Claude Code. Gets to 80% in seconds. "Haven't written front-end code in 3 months."</span></span></a> with feature flags.</div>
+<div class="hl"><strong>Implication:</strong> Frame design as an organizational capability the team stewards, not a service only designers perform.</div>
+</div>
+</div>
+
+<div class="consideration">
+<div><div class="consideration-num">02</div><div class="consideration-label">Structure</div></div>
+<div>
+<h3>The product trio is compressing, not dying</h3>
+<p>The PM/Designer/Engineer model is being reconfigured. <a href="https://productschool.com/blog/artificial-intelligence/will-ai-replace-software-engineers" target="_blank" class="cref">Andrew Ng reports PM-to-engineer ratios of 2:1<span class="ctip"><span class="ct-title">PM-to-Engineer Ratio Shift</span><span class="ct-org">Product School / 2025</span><span class="ct-quote">Etsy shifted 1:10 to 1:6. Andrew Ng reports 2:1 PM-to-engineer on his teams (vs. traditional 1:4-7).</span></span></a>. <a href="https://newsletter.eng-leadership.com/p/inside-openais-engineering-culture" target="_blank" class="cref">OpenAI runs at 1 PM to 30 engineers<span class="ctip"><span class="ct-title">Inside OpenAI's Engineering Culture</span><span class="ct-org">Eng Leadership Newsletter / 2025</span><span class="ct-quote">Flat two-layer org. Universal $300K base. DRI model. Engineers own problems end-to-end. PMs sometimes prototype with code.</span></span></a>. <a href="https://www.lennysnewsletter.com/p/how-linear-builds-product" target="_blank" class="cref">Linear has no product managers at all<span class="ctip"><span class="ct-title">How Linear Builds Product</span><span class="ct-org">Lenny's Newsletter / 2024</span><span class="ct-quote">~80 employees, $1.25B. No PMs. Project-based teams assemble and disperse. Paid 1-5 day work trials.</span></span></a>.</p>
+<div class="ex"><strong>In practice:</strong> <a href="https://www.fastcompany.com/91453837/meta-hires-alan-dye-apple-top-design-exec" target="_blank" class="cref">Meta moved to a 1:50 manager-to-engineer ratio<span class="ctip"><span class="ct-title">Meta Hires Apple Design Chief</span><span class="ct-org">Fast Company / Dec 2025</span><span class="ct-quote">Alan Dye joined as CDO. Zuckerberg: breakthroughs come from small, talent-dense teams.</span></span></a> using AI agents for admin. <a href="https://www.lennysnewsletter.com/p/the-design-process-is-dead" target="_blank" class="cref">Anthropic ships features with one designer and one engineer<span class="ctip"><span class="ct-title">The Design Process Is Dead</span><span class="ct-org">Jenny Wen / Lenny's Podcast / Mar 2026</span><span class="ct-quote">Time split: 30-40% mocking (was 60-70%), 30-40% pairing with engineers. Designs for model trajectory.</span></span></a>.</div>
+<div class="hl"><strong>Implication:</strong> Design the operating model around tight, cross-functional teams. Assume overlap rather than clean handoffs.</div>
+</div>
+</div>
+
+<div class="consideration">
+<div><div class="consideration-num">03</div><div class="consideration-label">Roles</div></div>
+<div>
+<h3>Design roles are bifurcating</h3>
+<p>One path leads to the strategic systems thinker. The other to the AI-augmented "product builder." The middle is hollowing out. <a href="https://sfstandard.com/2026/03/05/engineer-2025-ai-land-everyone-s-builder-now/" target="_blank" class="cref">New titles emerging: Design Engineer, Builder, Product Architect<span class="ctip"><span class="ct-title">'Engineer' is so 2025. Everyone's a 'builder' now</span><span class="ct-org">SF Standard / Mar 2026</span><span class="ct-quote">Meta PMs call themselves "AI builders." Walmart has "agent builder" roles. LinkedIn: "The full stack builder takes what would've been days as a conveyor belt."</span></span></a>.</p>
+<div class="ex"><strong>In practice:</strong> <a href="https://vercel.com/blog/design-engineering-at-vercel" target="_blank" class="cref">Vercel formalized Design Engineer at $200K+<span class="ctip"><span class="ct-title">Design Engineering at Vercel</span><span class="ct-org">Vercel / 2025</span><span class="ct-quote">Dedicated Director of Design Engineering. Three modes: collaborate, embed, or independently ship.</span></span></a>. <a href="https://himalayas.app/companies/runway/jobs/product-designer" target="_blank" class="cref">Runway pays Design Engineers $250K-$310K<span class="ctip"><span class="ct-title">Runway Design Engineer Listing</span><span class="ct-org">Runway / 2025</span><span class="ct-quote">Requires prototyping AI video experiences and agentic tools. Bonus for Claude Code/Cursor experience.</span></span></a>. <a href="https://www.lennysnewsletter.com/p/the-design-process-is-dead" target="_blank" class="cref">Jenny Wen (Anthropic) now spends only 30-40% in Figma<span class="ctip"><span class="ct-title">The Design Process Is Dead</span><span class="ct-org">Jenny Wen / Mar 2026</span><span class="ct-quote">"You basically can't map out all those flows. You have core primitives and specific states, but the possibilities are endless."</span></span></a>, down from 60-70%.</div>
+<div class="hl"><strong>Implication:</strong> Define career paths for both the strategist and the builder. Both are legitimate.</div>
+</div>
+</div>
+
+<div class="consideration">
+<div><div class="consideration-num">04</div><div class="consideration-label">Discovery</div></div>
+<div>
+<h3>Discovery and experimentation become even more critical</h3>
+<p>When building costs drop to near zero, building the wrong thing faster is the real risk. <a href="https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works" target="_blank" class="cref">GDS notes spending requests are most commonly rejected because "discovery was not robust enough"<span class="ctip"><span class="ct-title">GDS: How the Discovery Phase Works</span><span class="ct-org">UK GDS / ongoing</span><span class="ct-quote">4-8 week discovery phase. Define the problem, understand users, decide whether to proceed to alpha.</span></span></a>. <a href="https://www.producttalk.org/getting-started-with-discovery/" target="_blank" class="cref">Discovery is not a phase, it's a continuous practice<span class="ctip"><span class="ct-title">Getting Started with Continuous Discovery</span><span class="ct-org">Teresa Torres / Product Talk</span><span class="ct-quote">Opportunity Solution Tree framework. Product Trio model. Discovery embedded in delivery, not gated before it.</span></span></a>.</p>
+<div class="own"><strong>Our framework:</strong> We distinguish between "just build it" (lower risk, partner owns outcomes) and "test the crucial assumptions" (high risk, biggest unknowns). Our expertise is knowing which is which. We use "experimental builds" rather than "prototypes" because the latter makes people think of Figma mockups.</div>
+<div class="hl"><strong>Implication:</strong> Position upstream discovery as the team's highest-value activity.</div>
+</div>
+</div>
+
+<div class="consideration">
+<div><div class="consideration-num">05</div><div class="consideration-label">Quality</div></div>
+<div>
+<h3>Quality and distinctiveness are the real differentiators</h3>
+<p><a href="https://fortune.com/2025/12/09/ai-mediocre-results-human-creativity-ideo-ceo-mike-peng/" target="_blank" class="cref">IDEO's CEO warns AI produces "mediocre" results<span class="ctip"><span class="ct-title">AI's Reliance on Patterns Can Lead to 'Mediocre' Results</span><span class="ct-org">Mike Peng, IDEO CEO / Fortune / Dec 2025</span><span class="ct-quote">"Creativity is all about not being mediocre and being on the edge." AI relies on averages.</span></span></a>. <a href="https://fosterfletcher.com/gravity-of-the-generic/" target="_blank" class="cref">Foster-Fletcher documents "creative scars" that persist after AI tools are removed<span class="ctip"><span class="ct-title">Gravity of the Generic</span><span class="ct-org">R. Foster-Fletcher / 2025-26</span><span class="ct-quote">"Allowing the Gravity of the Generic to move an organisation to the centre does not require a decision. Only the absence of one."</span></span></a>. <a href="https://news.designrush.com/spotify-wrapped-2025-first-tv-ad-after-ai-backlash" target="_blank" class="cref">Spotify's 2024 Wrapped was panned as "AI slop"; 2025's deliberately analog version was celebrated<span class="ctip"><span class="ct-title">Spotify Wrapped AI Backlash</span><span class="ct-org">DesignRush / Dec 2025</span><span class="ct-quote">Director of brand: "If brands are looking to AI for inspiration, we did the opposite." Inspired by mixtapes and CDs.</span></span></a>.</p>
+<div class="ex"><strong>In practice:</strong> <a href="https://www.lennysnewsletter.com/p/superhumans-secret-to-success-rahul-vohra" target="_blank" class="cref">Superhuman spent 6 months perfecting typography<span class="ctip"><span class="ct-title">Superhuman's Secret to Success</span><span class="ct-org">Rahul Vohra / Lenny's Newsletter</span><span class="ct-quote">Tested 15 fonts, modified Adelle Sans. 2 years rewriting Chrome for sub-100ms. CEO spends 60-70% on product/design.</span></span></a> and 2 years rewriting Chrome for sub-100ms performance. <a href="https://gdusa.com/pentagram-federal-website-generates-ai-controversy/" target="_blank" class="cref">Pentagram used Midjourney for 1,500 federal icons, starting from physical inputs<span class="ctip"><span class="ct-title">Pentagram AI Icons Controversy</span><span class="ct-org">GDUSA / Dec 2024</span><span class="ct-quote">Paula Scher started from handmade inputs (paint, cut paper) and trained Midjourney. Most publicly debated use of AI by a major design firm.</span></span></a>.</div>
+<div class="hl"><strong>Implication:</strong> Make quality, accessibility, and design integrity explicit values. Position the team as the quality conscience.</div>
+</div>
+</div>
+
+<div class="consideration">
+<div><div class="consideration-num">06</div><div class="consideration-label">Talent</div></div>
+<div>
+<h3>The junior pipeline crisis requires deliberate intervention</h3>
+<p><a href="https://mattstromawn.com/writing/product-design-talent-crisis/" target="_blank" class="cref">Entry-level hiring dropped 43% since 2022<span class="ctip"><span class="ct-title">The Product Design Talent Crisis</span><span class="ct-org">Matt Strom-Awn / 2025</span><span class="ct-quote">Only 1% of 600+ listings were internships. Super-ICs with 8yr median dominate. "Talent cliff within a decade."</span></span></a>. <a href="https://thinkpol.ca/2026/03/24/the-junior-developer-pipeline-is-broken-and-nobody-has-a-plan-to-fix-it/" target="_blank" class="cref">Harvard research shows junior employment declining 7.7% at AI-adopting firms<span class="ctip"><span class="ct-title">The Junior Pipeline Is Broken</span><span class="ct-org">ThinkPol / Mar 2026</span><span class="ct-quote">LinkedIn/Indeed noted 35% decline in junior tech positions across EU. "The industry is eating its seed corn."</span></span></a>.</p>
+<div class="ex"><strong>In practice:</strong> <a href="https://fortune.com/2025/12/03/microsoft-employees-ai-native-vp-design-liz-danzico/" target="_blank" class="cref">Microsoft invested in structured AI training for all 200 designers<span class="ctip"><span class="ct-title">Microsoft AI-Native Design</span><span class="ct-org">Fortune / Dec 2025</span><span class="ct-quote">Liz Danzico built in-house AI course. "Tremendously positive" response. Workers felt "more satisfied and energized."</span></span></a>. <a href="https://www.cnbc.com/2025/09/26/accenture-plans-on-exiting-staff-who-cant-be-reskilled-on-ai.html" target="_blank" class="cref">Accenture said it would "exit" staff who can't be reskilled<span class="ctip"><span class="ct-title">Accenture AI Reskilling</span><span class="ct-org">CNBC / Sep 2025</span><span class="ct-quote">11,000+ laid off. Trained 550K on GenAI. AI headcount 40K to 77K. Staff rebranded as "reinventors."</span></span></a>.</div>
+<div class="hl"><strong>Implication:</strong> Design junior pathways: fellowships, apprenticeships, structured AI learning.</div>
+</div>
+</div>
+
+<div class="consideration">
+<div><div class="consideration-num">07</div><div class="consideration-label">Tools</div></div>
+<div>
+<h3>Tools are changing the workflow, not just the output</h3>
+<p><a href="https://www.toools.design/blog-posts/vibe-coding-tools-for-designers" target="_blank" class="cref">"Vibe coding" became Collins Dictionary's Word of the Year 2025 and MIT Breakthrough Technology 2026<span class="ctip"><span class="ct-title">Vibe Coding Tools for Designers 2026</span><span class="ct-org">Toools.design / 2026</span><span class="ct-quote">Coined by Andrej Karpathy (Feb 2025). "Designers who never learned to code are shipping functional frontends."</span></span></a>. The <a href="https://www.figma.com/blog/config-2025-press-release/" target="_blank" class="cref">Figma-to-code handoff is collapsing<span class="ctip"><span class="ct-title">Config 2025 Press Release</span><span class="ct-org">Figma / May 2025</span><span class="ct-quote">Figma Make generates working code. MCP Server connects to Cursor, Claude Code, Copilot. Figma Sites turns designs into websites.</span></span></a>.</p>
+<div class="ex"><strong>In practice:</strong> <a href="https://www.chatprd.ai/how-i-ai/how-notion-designs-with-ai-brian-lovins-prototype-playground-and-claude-code-workflows" target="_blank" class="cref">Notion's Prototype Playground<span class="ctip"><span class="ct-title">How Notion Designs with AI</span><span class="ct-org">Brian Lovin / How I AI podcast</span><span class="ct-quote">Shared Next.js repo. Custom /figma slash command extracts tokens via MCP. "Anytime the AI asks you to do something, teach the AI to answer that question itself."</span></span></a> (shared Next.js repo + Claude Code) lets designers ship functional prototypes. <a href="https://www.lennysnewsletter.com/p/a-designers-guide-to-ai-building" target="_blank" class="cref">Joel Unger (Atlassian) reports Cursor is "10x faster" than Figma<span class="ctip"><span class="ct-title">A Designer's Guide to AI Building</span><span class="ct-org">Joel Unger, Design Director, Atlassian / May 2025</span><span class="ct-quote">"AI frees designers to operate at a higher level of creativity and improves designer-developer collaboration."</span></span></a>.</div>
+<div class="hl"><strong>Implication:</strong> Define a tool strategy. Invest in AI-readable design systems. Create shared prototyping environments.</div>
+</div>
+</div>
+<!-- CROSS-INDUSTRY PATTERNS -->
+<section class="tier" id="patterns">
+<div class="tier-label">Cross-Industry Analysis</div>
+<h2>Patterns and Tensions Across Industries</h2>
+<p>What's consistent, what diverges, and what government teams should take from each model.</p>
+</section>
+
+<div class="big-quote"><blockquote>Every category of company is restructuring design. The <em>direction</em> is the same. The <em>speed</em> and <em>shape</em> differ enormously.</blockquote></div>
+
+<div class="summary-section">
+<h3>Five patterns that hold across all four categories</h3>
+<p><strong>1. Teams are getting smaller and more senior.</strong> <a href="https://dnyuz.com/2025/12/11/cursor-launches-an-ai-coding-tool-for-designers/" target="_blank" class="cref">Cursor runs $1B ARR with ~182 people<span class="ctip"><span class="ct-title">Cursor Visual Editor</span><span class="ct-org">WIRED / Dec 2025</span><span class="ct-quote">Almost entirely engineers and researchers. No visible dedicated design team. Product design treated as engineering concern.</span></span></a>. <a href="https://www.lennysnewsletter.com/p/the-design-process-is-dead" target="_blank" class="cref">Anthropic ships features with 1 designer + 1 engineer<span class="ctip"><span class="ct-title">The Design Process Is Dead</span><span class="ct-org">Jenny Wen / Lenny's Podcast / Mar 2026</span><span class="ct-quote">"Two types of design work: execution support (helping engineers iterate) and short-horizon vision (3-6 month prototypes)."</span></span></a>. <a href="https://fortune.com/asia/2025/04/30/ideo-names-mike-peng-ceo-ai-design-thinking/" target="_blank" class="cref">IDEO went from 725 to under 400 staff<span class="ctip"><span class="ct-title">IDEO Names Mike Peng CEO</span><span class="ct-org">Fortune / Apr 2025</span><span class="ct-quote">Revenue $300M to ~$100M. Munich and Tokyo closed. Three CEOs in five years. Repositioning as creative AI partner.</span></span></a>.</p>
+<p><strong>2. The "builder" archetype is emerging everywhere.</strong> <a href="https://sfstandard.com/2026/03/05/engineer-2025-ai-land-everyone-s-builder-now/" target="_blank" class="cref">Meta PMs call themselves "AI builders," Walmart has "agent builder" roles<span class="ctip"><span class="ct-title">Everyone's a 'Builder' Now</span><span class="ct-org">SF Standard / Mar 2026</span><span class="ct-quote">"The full stack builder takes what would've been days as a conveyor belt between design, product, engineering... and gives it to an individual."</span></span></a>. <a href="https://vercel.com/blog/design-engineering-at-vercel" target="_blank" class="cref">Vercel formalized "Design Engineer"<span class="ctip"><span class="ct-title">Design Engineering at Vercel</span><span class="ct-org">Vercel / 2025</span><span class="ct-quote">$200K+ comp. Write production code, GLSL shaders, 3D experiences. No "correct" background required.</span></span></a>. <a href="https://himalayas.app/companies/runway/jobs/product-designer" target="_blank" class="cref">Runway pays $250K-$310K for the role<span class="ctip"><span class="ct-title">Runway Design Engineer Listing</span><span class="ct-org">Runway / 2025</span><span class="ct-quote">Prototyping AI video experiences and agentic tools. Explicitly values "artistic and creative potential."</span></span></a>.</p>
+<p><strong>3. Design systems are becoming AI infrastructure.</strong> <a href="https://www.figma.com/blog/config-2025-press-release/" target="_blank" class="cref">Figma's MCP Server<span class="ctip"><span class="ct-title">Config 2025</span><span class="ct-org">Figma / May 2025</span><span class="ct-quote">Figma Make, MCP Server, Sites launched. Connects design tools directly to Cursor, Claude Code, Copilot.</span></span></a>, <a href="https://vercel.com/blog/design-engineering-at-vercel" target="_blank" class="cref">Vercel's v0 integration<span class="ctip"><span class="ct-title">Vercel Ship 2025</span><span class="ct-org">Vercel / 2025</span><span class="ct-quote">Used v0 to prompt key parts of conference platform. "Having prototyping capability within Design was a huge unlock."</span></span></a>, and <a href="https://www.chatprd.ai/how-i-ai/how-notion-designs-with-ai-brian-lovins-prototype-playground-and-claude-code-workflows" target="_blank" class="cref">Notion's Prototype Playground<span class="ctip"><span class="ct-title">Notion Prototype Playground</span><span class="ct-org">Brian Lovin / 2025</span><span class="ct-quote">Custom /figma command extracts tokens via MCP. "Anytime the AI asks you to do something, teach the AI to answer it itself."</span></span></a> all treat design systems as the translation layer that lets AI understand design intent.</p>
+<p><strong>4. Prototyping has moved from mockups to code.</strong> This is happening at <a href="https://www.chatprd.ai/how-i-ai/how-notion-designs-with-ai-brian-lovins-prototype-playground-and-claude-code-workflows" target="_blank" class="cref">Notion (Claude Code)<span class="ctip"><span class="ct-title">Notion Prototype Playground</span><span class="ct-org">Brian Lovin / 2025</span><span class="ct-quote">"I haven't written a single line of front-end code in 3 months." Gets to 80% complete in seconds.</span></span></a>, <a href="https://www.lennysnewsletter.com/p/a-designers-guide-to-ai-building" target="_blank" class="cref">Atlassian (Cursor)<span class="ctip"><span class="ct-title">Designer's Guide to AI Building</span><span class="ct-org">Joel Unger, Atlassian / May 2025</span><span class="ct-quote">"Prototyping in Cursor is 10x faster than Figma. Simplifies collaboration and accelerates getting ideas out."</span></span></a>, and across the <a href="https://adplist.substack.com/p/a-designers-guide-to-cursor-and-claude" target="_blank" class="cref">ADPList community (8,000+ designers enrolled in Cursor courses)<span class="ctip"><span class="ct-title">Designer's Guide to Cursor and Claude</span><span class="ct-org">Felix Lee / ADPList / Late 2025</span><span class="ct-quote">"Designers who build command $150-400/hr; designers who don't compete for $50/hr gigs."</span></span></a>.</p>
+<p><strong>5. The senior-junior gap is widening everywhere.</strong> <a href="https://www.cnbc.com/2025/10/01/google-cloud-unit-layoffs.html" target="_blank" class="cref">Google cut junior/mid roles hardest<span class="ctip"><span class="ct-title">Google Cloud Design Layoffs</span><span class="ct-org">CNBC / Oct 2025</span><span class="ct-quote">100+ roles cut. Some teams halved. Targeted quantitative UX research and platform experience.</span></span></a>. <a href="https://www.figma.com/blog/why-demand-for-designers-is-on-the-rise/" target="_blank" class="cref">Figma data shows 56% of demand growth concentrated at senior levels<span class="ctip"><span class="ct-title">Why Demand for Designers Is Rising</span><span class="ct-org">Figma / 2025</span><span class="ct-quote">82% of leaders say need for designers has increased. 73% now require AI proficiency. Postings up ~60% in 2025 vs. 2024.</span></span></a>. Only <a href="https://fortune.com/2025/12/03/microsoft-employees-ai-native-vp-design-liz-danzico/" target="_blank" class="cref">Microsoft's structured training<span class="ctip"><span class="ct-title">Microsoft AI-Native Design</span><span class="ct-org">Fortune / Dec 2025</span><span class="ct-quote">In-house AI course for all ~200 designers. "Tremendously positive" response.</span></span></a> represents a deliberate counter-investment.</p>
+</div>
+
+<div class="summary-section">
+<h3>Six tensions that differ by industry</h3>
+<div class="tension-grid">
+<div class="tension"><h4>Speed of adoption</h4><p><strong>AI-native</strong> (Anthropic, Cursor, OpenAI) operate as if transformation is complete. <strong>Big tech</strong> is mid-transition. <strong>Agencies</strong> are in crisis. <strong>Government</strong> has barely started. The gap is 3-5 years and widening.</p></div>
+<div class="tension"><h4>Design's seat at the table</h4><p><strong>Airbnb, Superhuman</strong>: design-led, CEO involvement. <strong>Anthropic, OpenAI</strong>: engineering-led, design respected but secondary. <strong>Google Cloud</strong>: design reduced. <strong>Meta</strong>: investing heavily.</p></div>
+<div class="tension"><h4>Specialist vs. generalist</h4><p><strong>Startups</strong> (Linear, Vercel): extreme generalists, end-to-end. <strong>Big tech</strong>: specialist tracks compressed but maintained. <strong>Agencies</strong>: caught between client speed demands and problem complexity.</p></div>
+<div class="tension"><h4>Human craft vs. AI efficiency</h4><p><strong>Spotify, Superhuman, Pentagram</strong>: investing in craft. <strong>Cursor, Canva</strong>: design without dedicated teams or via democratization. Quality bar depends on users and context.</p></div>
+<div class="tension"><h4>Upskilling vs. replacing</h4><p><strong>Microsoft</strong>: structured training for all. <strong>Accenture</strong>: reskill or be "exited." <strong>Meta</strong>: cut 5% lowest performers. <strong>IDEO</strong>: shrink to survive. Philosophical fork in the road.</p></div>
+<div class="tension"><h4>Open vs. silent AI</h4><p><strong>Spotify Wrapped 2024</strong>: branded AI triggered backlash. <strong>Superhuman</strong>: AI used 37x/week/user because it's seamless. Best AI design is often invisible.</p></div>
+</div>
+</div>
+
+<div class="summary-section">
+<h3>What government teams can learn from each category</h3>
+<p><strong>From big tech:</strong> <a href="https://fortune.com/2025/12/03/microsoft-employees-ai-native-vp-design-liz-danzico/" target="_blank" class="cref">Microsoft's structured AI training<span class="ctip"><span class="ct-title">Microsoft AI-Native Design</span><span class="ct-org">Fortune / Dec 2025</span><span class="ct-quote">Goal: everyone AI-native by EOY. In-house course. "Workers felt more satisfied and energized about AI possibilities."</span></span></a> is the most transferable model. <a href="https://www.cnbc.com/2025/10/01/google-cloud-unit-layoffs.html" target="_blank" class="cref">Google's cuts<span class="ctip"><span class="ct-title">Google Cloud Design Layoffs</span><span class="ct-org">CNBC / Oct 2025</span><span class="ct-quote">100+ roles cut. If design can't demonstrate strategic value, it gets downsized.</span></span></a> are a warning: if design can't demonstrate strategic value, it gets downsized.</p>
+<p><strong>From startups:</strong> The <a href="https://vercel.com/blog/design-engineering-at-vercel" target="_blank" class="cref">design engineer model (Vercel, Stripe)<span class="ctip"><span class="ct-title">Design Engineering at Vercel</span><span class="ct-org">Vercel / 2025</span><span class="ct-quote">Three modes: collaborate with designers, embed in squads, or independently ship features.</span></span></a> and <a href="https://www.chatprd.ai/how-i-ai/how-notion-designs-with-ai-brian-lovins-prototype-playground-and-claude-code-workflows" target="_blank" class="cref">shared prototyping environments (Notion)<span class="ctip"><span class="ct-title">Notion Prototype Playground</span><span class="ct-org">Brian Lovin / 2025</span><span class="ct-quote">Shared Next.js repo. Each designer has a namespaced directory. Shares components matching Notion's design system.</span></span></a> are adoptable patterns. Small teams with the right tools can dramatically outperform larger ones.</p>
+<p><strong>From agencies:</strong> <a href="https://fortune.com/asia/2025/04/30/ideo-names-mike-peng-ceo-ai-design-thinking/" target="_blank" class="cref">IDEO's collapse<span class="ctip"><span class="ct-title">IDEO Names Mike Peng CEO</span><span class="ct-org">Fortune / Apr 2025</span><span class="ct-quote">Revenue $300M to ~$100M. Driven by commoditization of design thinking, clients building in-house, reduced consulting budgets, and AI tools.</span></span></a> is a warning for any team that positions itself around process rather than outcomes. <a href="https://www.cnbc.com/2025/09/26/accenture-plans-on-exiting-staff-who-cant-be-reskilled-on-ai.html" target="_blank" class="cref">Accenture's reskilling mandate<span class="ctip"><span class="ct-title">Accenture AI Reskilling</span><span class="ct-org">CNBC / Sep 2025</span><span class="ct-quote">Trained 550,000 on GenAI. AI headcount 40K to 77K. All divisions merged into "Reinvention Services."</span></span></a> is relevant: government teams also need to decide how to bring existing staff along.</p>
+<p><strong>From AI-native companies:</strong> <a href="https://www.lennysnewsletter.com/p/the-design-process-is-dead" target="_blank" class="cref">Jenny Wen's insight about designing for non-deterministic systems<span class="ctip"><span class="ct-title">The Design Process Is Dead</span><span class="ct-org">Jenny Wen / Lenny's Podcast / Mar 2026</span><span class="ct-quote">"You can't map all the flows. You have core primitives and target states, but possibilities are endless." Designs for model trajectory.</span></span></a> is the most forward-looking design thinking available. <a href="https://www.nngroup.com/articles/perplexity-henry-modisett/" target="_blank" class="cref">Perplexity's trust-first approach<span class="ctip"><span class="ct-title">The UX of AI: Lessons from Perplexity</span><span class="ct-org">NNG / Henry Modisett / 2025</span><span class="ct-quote">"People want information fast and want to trust it. It's actually quite a simple design problem." Sources alongside AI answers.</span></span></a> (showing sources alongside AI answers) is directly applicable to government AI services.</p>
+</div>
+
+<!-- OUR FRAMEWORKS -->
+<div class="summary-section">
+<h3>Our own frameworks for rapid experimentation</h3>
+<p>Through our work building a creative technology capability and running experimental builds with government partners, we've developed frameworks essential for making this work in practice.</p>
+<p><strong>The delivery paradox.</strong> When we test something and it fails, we've prevented wasted investment. That's a good outcome. But the partner sees: no deliverable, nothing shipped. It feels like failure. Solving this requires reframing success before the experiment starts.</p>
+<p><strong>The frozen lake principle.</strong> If a kid wants to get across a frozen lake and starts running and slips, that's not the end. They've learned something: maybe running is the problem, or maybe they've learned something about the lake itself. The first failure doesn't mean you can't cross.</p>
+<p><strong>Two categories of work.</strong> (1) "Just build it" for lower-risk areas where partners are SMEs and own outcomes. (2) "Test the crucial assumptions" for high-risk areas with the biggest unknowns. Our expertise is knowing which is which.</p>
+<p><strong>"Experimental builds" not "prototypes."</strong> When we say "prototype," people think Figma mockup. What we mean is working builds that aren't meant to scale and might break, but get something real into users' hands.</p>
+<p><strong>Setting up for failure.</strong> Build iteration pathways upfront, not just single tests. Have a clear next move before you start. The value isn't just disproving bad ideas quickly. It's having a clear direction for what comes after.</p>
+</div>
+
+<!-- FUTURE OUTLOOK -->
+<div class="big-quote"><blockquote>Where we are now is <em>interim</em>. The playbook needs a future outlook.</blockquote></div>
+
+<div class="phase-grid">
+<div class="phase"><div class="phase-num">Phase 1 / Now</div><h4>Learning AI</h4><p>Teams getting familiar with tools. Excitement, experimentation, but still bolting AI onto existing ways of working. This is where most government teams are today.</p></div>
+<div class="phase"><div class="phase-num">Phase 2 / Near-term</div><h4>Designing workflows with AI</h4><p>Deliberately mapping which parts get augmented, replaced, or are entirely new. Not "I used AI faster" but rethinking the workflow itself.</p></div>
+<div class="phase"><div class="phase-num">Phase 3 / The shift</div><h4>Designing for AI as a medium</h4><p>What does a service look like when an AI agent is the user? What does a form look like as a conversation? This is designing FOR AI, not just WITH AI.</p></div>
+</div>
+
+<!-- ADDITIONAL CONSIDERATIONS -->
+<div class="big-quote"><blockquote>Three more considerations for any team taking this seriously</blockquote></div>
+
+<div class="consideration">
+<div><div class="consideration-num" style="font-size:2.25rem">&#9670;</div><div class="consideration-label">Ethics</div></div>
+<div>
+<h3>Responsible AI in design</h3>
+<p>For government services, stakes around bias, accessibility, and trust are higher. The <a href="https://gds.blog.gov.uk/2025/02/10/launching-the-artificial-intelligence-playbook-for-the-uk-government/" target="_blank" class="cref">UK GDS Data Ethics Framework<span class="ctip"><span class="ct-title">UK GDS AI Playbook</span><span class="ct-org">GDS / Feb 2025</span><span class="ct-quote">10 principles for safe, responsible AI. 50+ experts from 20+ departments.</span></span></a> (transparency, accountability, fairness) is the starting reference. <a href="https://fosterfletcher.com/gravity-of-the-generic/" target="_blank" class="cref">AI-generated content risks homogeneity<span class="ctip"><span class="ct-title">Gravity of the Generic</span><span class="ct-org">Foster-Fletcher / 2025-26</span><span class="ct-quote">"Creative scars" persist after AI tools removed. Moving to the centre happens passively without active resistance.</span></span></a> and may not meet WCAG standards without human review.</p>
+</div>
+</div>
+
+<div class="consideration">
+<div><div class="consideration-num" style="font-size:2.25rem">&#9670;</div><div class="consideration-label">Impact</div></div>
+<div>
+<h3>Measuring design team value</h3>
+<p><a href="https://www.cnbc.com/2025/10/01/google-cloud-unit-layoffs.html" target="_blank" class="cref">Google Cloud's cuts targeted teams that couldn't demonstrate value<span class="ctip"><span class="ct-title">Google Cloud Design Layoffs</span><span class="ct-org">CNBC / Oct 2025</span><span class="ct-quote">Targeted quantitative UX research. Halved some teams. Redirecting budget to AI engineering.</span></span></a>. <a href="https://www.nngroup.com/articles/state-of-ux-2026/" target="_blank" class="cref">UX research teams that couldn't draw a line to ROI faced severe cuts<span class="ctip"><span class="ct-title">State of UX 2026</span><span class="ct-org">NNG / Late 2025</span><span class="ct-quote">"Post-hype AI" year. Successful UX pros rebranded as "Product Strategists." ROI-blind teams cut.</span></span></a>. <a href="https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/the-business-value-of-design" target="_blank" class="cref">McKinsey's study provides the macro case: 32% higher revenue growth for top design performers<span class="ctip"><span class="ct-title">The Business Value of Design</span><span class="ct-org">McKinsey / 2018 / 300 companies, 5 years</span><span class="ct-quote">Top-quartile MDI scorers achieved 32% more revenue growth and 56% more TRS growth vs. industry counterparts.</span></span></a>.</p>
+</div>
+</div>
+
+<div class="consideration">
+<div><div class="consideration-num" style="font-size:2.25rem">&#9670;</div><div class="consideration-label">Transition</div></div>
+<div>
+<h3>Change management: transitioning the team</h3>
+<p><a href="https://fortune.com/2025/12/03/microsoft-employees-ai-native-vp-design-liz-danzico/" target="_blank" class="cref">Microsoft's approach (structured course, hands-on experimentation, clear goal)<span class="ctip"><span class="ct-title">Microsoft AI-Native Design</span><span class="ct-org">Fortune / Dec 2025</span><span class="ct-quote">"AI-native by end of fiscal year." In-house course. Workers felt "more satisfied and energized."</span></span></a> is the most transferable. <a href="https://www.charterworks.com/ai-leadership-playbook/" target="_blank" class="cref">The Charter playbook warns: "Bolting transformational technologies onto existing processes produces suboptimal results"<span class="ctip"><span class="ct-title">Leading in the Age of AI Playbook</span><span class="ct-org">Charter / Sep 2025</span><span class="ct-quote">Four leadership approaches with case studies. Research-backed guidance for AI-era organizational change.</span></span></a>. <a href="https://www.stateofaidesign.com/" target="_blank" class="cref">96% of designers learn AI through self-teaching<span class="ctip"><span class="ct-title">State of AI in Design 2025</span><span class="ct-org">Foundation Capital / 400+ designers</span><span class="ct-quote">89% say AI improved workflow. But self-teaching means adoption is uneven and leaves behind those without resources.</span></span></a>, which means adoption is uneven.</p>
+<div class="own"><strong>Our sequencing:</strong> First focus on opening up the approach (pitching, vocabulary, preparing for failure). Second, build capability (skills, speed, boundaries). Third, show value with real partners. If we codify perfectly but don't bring partners along, we fail.</div>
+</div>
+</div>
+<!-- TIER 2: SUMMARY -->
+<section class="tier" id="summary">
+<div class="tier-label">Tier 2</div>
+<h2>Summary</h2>
+<p>A narrative synthesis. Read this to understand the full picture in 15 minutes.</p>
+</section>
+
+<div class="summary-section">
+<h3>The core shift: from making to deciding</h3>
+<p>Every signal points to the same structural change. AI has inverted the ratio of judgment work to execution work. <a href="https://www.lewis-lin.com/blog/the-ratio-has-flipped-how-ai-should-change-how-you-structure-product-teams" target="_blank" class="cref">Lewis C. Lin frames it as "hire for taste, not craft"<span class="ctip"><span class="ct-title">The Ratio Has Flipped</span><span class="ct-org">Lewis C. Lin / Feb 2026</span><span class="ct-quote">AI inverted the judgment-to-execution ratio. Mid-level designers shipping pixel-perfect screens are being displaced.</span></span></a>. The <a href="https://www.stateofaidesign.com/" target="_blank" class="cref">Foundation Capital survey found AI gets to "60%" but the last 40% remains human<span class="ctip"><span class="ct-title">State of AI in Design 2025</span><span class="ct-org">Foundation Capital / 400+ designers</span><span class="ct-quote">"The space between design, product, and engineering is shrinking rapidly." 89% say AI improved workflow.</span></span></a>.</p>
+</div>
+
+<div class="summary-section">
+<h3>What companies are actually doing</h3>
+<p><strong>Big tech is restructuring aggressively.</strong> <a href="https://www.cnbc.com/2025/10/01/google-cloud-unit-layoffs.html" target="_blank" class="cref">Google cut 100+ design roles in Cloud<span class="ctip"><span class="ct-title">Google Cloud Layoffs</span><span class="ct-org">CNBC / Oct 2025</span><span class="ct-quote">Targeted quantitative UX research and platform experience. Redirecting to AI engineering.</span></span></a>. <a href="https://www.fastcompany.com/91453837/meta-hires-alan-dye-apple-top-design-exec" target="_blank" class="cref">Meta hired Apple's design leadership<span class="ctip"><span class="ct-title">Meta Hires Apple Design Chief</span><span class="ct-org">Fast Company / Dec 2025</span><span class="ct-quote">Alan Dye joined as CDO. Billy Sorrentino followed. New studio for hardware, software, AI integration.</span></span></a>. <a href="https://fortune.com/2025/12/03/microsoft-employees-ai-native-vp-design-liz-danzico/" target="_blank" class="cref">Microsoft is training all 200 AI designers to be "AI-native"<span class="ctip"><span class="ct-title">Microsoft AI-Native Design</span><span class="ct-org">Fortune / Dec 2025</span><span class="ct-quote">Liz Danzico: "every person in the studio will become AI-native by end of fiscal year."</span></span></a>. <a href="https://news.designrush.com/spotify-wrapped-2025-first-tv-ad-after-ai-backlash" target="_blank" class="cref">Spotify reversed its AI-branded approach after backlash<span class="ctip"><span class="ct-title">Spotify Wrapped AI Reversal</span><span class="ct-org">DesignRush / Dec 2025</span><span class="ct-quote">"If brands are looking to AI for inspiration, we did the opposite." 2025 Wrapped went deliberately analog.</span></span></a>.</p>
+<p><strong>Startups dissolved the design-engineering boundary.</strong> <a href="https://vercel.com/blog/design-engineering-at-vercel" target="_blank" class="cref">Vercel formalized Design Engineer at $200K+<span class="ctip"><span class="ct-title">Design Engineering at Vercel</span><span class="ct-org">Vercel / 2025</span><span class="ct-quote">Three modes: collaborate, embed in squads, or independently ship. Write production code, shaders, 3D.</span></span></a>. <a href="https://www.chatprd.ai/how-i-ai/how-notion-designs-with-ai-brian-lovins-prototype-playground-and-claude-code-workflows" target="_blank" class="cref">Notion's design team prototypes in production code<span class="ctip"><span class="ct-title">Notion Prototype Playground</span><span class="ct-org">Brian Lovin / 2025</span><span class="ct-quote">Shared Next.js repo + Claude Code. Custom Figma MCP integration. Gets to 80% in seconds.</span></span></a>. <a href="https://www.lennysnewsletter.com/p/how-linear-builds-product" target="_blank" class="cref">Linear operates without product managers<span class="ctip"><span class="ct-title">How Linear Builds Product</span><span class="ct-org">Lenny's Newsletter / 2024</span><span class="ct-quote">~80 employees, $1.25B valuation. No PMs. Project-based teams. Paid 1-5 day work trials.</span></span></a>.</p>
+<p><strong>Agencies face an existential reckoning.</strong> <a href="https://fortune.com/asia/2025/04/30/ideo-names-mike-peng-ceo-ai-design-thinking/" target="_blank" class="cref">IDEO's revenue fell from $300M to $100M<span class="ctip"><span class="ct-title">IDEO Names Mike Peng CEO</span><span class="ct-org">Fortune / Apr 2025</span><span class="ct-quote">725 to under 400 staff. Munich/Tokyo closed. New CEO repositioning as creative AI partner.</span></span></a>. <a href="https://www.cnbc.com/2025/09/26/accenture-plans-on-exiting-staff-who-cant-be-reskilled-on-ai.html" target="_blank" class="cref">Accenture laid off 11,000+ and told remaining staff to reskill or be "exited"<span class="ctip"><span class="ct-title">Accenture AI Reskilling</span><span class="ct-org">CNBC / Sep 2025</span><span class="ct-quote">Trained 550K on GenAI. AI headcount 40K to 77K. All divisions merged into "Reinvention Services."</span></span></a>.</p>
+<p><strong>AI-native companies run the smallest, fastest teams.</strong> <a href="https://www.lennysnewsletter.com/p/the-design-process-is-dead" target="_blank" class="cref">Anthropic's head of design ships with one engineer<span class="ctip"><span class="ct-title">The Design Process Is Dead</span><span class="ct-org">Jenny Wen / Lenny's Podcast / Mar 2026</span><span class="ct-quote">30-40% mocking, 30-40% pairing with engineers. Designs for non-deterministic systems and model trajectory.</span></span></a>. <a href="https://newsletter.eng-leadership.com/p/inside-openais-engineering-culture" target="_blank" class="cref">OpenAI runs 1 PM to 30 engineers<span class="ctip"><span class="ct-title">Inside OpenAI's Engineering Culture</span><span class="ct-org">Eng Leadership / 2025</span><span class="ct-quote">Flat two-layer org. $300K universal base. DRI model. 3-5 teams work same problem in parallel.</span></span></a>.</p>
+</div>
+
+<div class="summary-section">
+<h3>Seven tensions to navigate honestly</h3>
+<div class="tension-grid">
+<div class="tension"><h4>Speed vs. quality</h4><p>78% say AI enhances efficiency, but only 32% trust output. Define when speed matters vs. when quality matters.</p></div>
+<div class="tension"><h4>Generalist vs. specialist</h4><p>Startups hire generalists. Big tech compresses specialist tracks. The "full-stack builder" risks losing deep expertise.</p></div>
+<div class="tension"><h4>Upskilling vs. replacing</h4><p>Microsoft trains everyone. Accenture exits those who can't reskill. Which is right depends on your context and values.</p></div>
+<div class="tension"><h4>Efficiency vs. capability</h4><p>93% of tech spending goes to technology, 7% to training. This ratio undermines long-term capability.</p></div>
+<div class="tension"><h4>Open vs. silent AI</h4><p>Branded AI triggers backlash. Invisible AI gets loved. Best AI design is often the kind users don't notice.</p></div>
+<div class="tension"><h4>Delivery paradox</h4><p>When an experiment fails, we've prevented waste. But partners see no deliverable. Reframe success before experiments start.</p></div>
+</div>
+</div>
+
+<div class="summary-section" style="border-bottom:none">
+<h3>Five commitments for the playbook</h3>
+<div class="commitments">
+<div class="commitment"><div class="commitment-num">1</div><div><h4>We solve the right problems.</h4><p>Upstream discovery is our highest-value activity. We validate before we build.</p></div></div>
+<div class="commitment"><div class="commitment-num">2</div><div><h4>We raise design quality across the organization.</h4><p>Design is a capability we steward. We set standards and equip others.</p></div></div>
+<div class="commitment"><div class="commitment-num">3</div><div><h4>We experiment rapidly and learn publicly.</h4><p>We build experimental builds at AI speed. We share what we learn, including failures.</p></div></div>
+<div class="commitment"><div class="commitment-num">4</div><div><h4>We use AI as leverage, not replacement for judgment.</h4><p>We maintain quality gates and human review for citizen-facing work.</p></div></div>
+<div class="commitment"><div class="commitment-num">5</div><div><h4>We build the next generation.</h4><p>We maintain junior pathways and invest in structured learning.</p></div></div>
+</div>
+</div>
+<!-- PRIVATE SECTOR -->
+<section class="tier" id="private">
+<div class="tier-label">Tier 3a</div>
+<h2>Private Sector: How Companies Are Restructuring</h2>
+<p>Named examples across big tech, startups, agencies, and AI-native companies. Click company names for primary sources.</p>
+</section>
+
+<div class="detail-section">
+<h3>Big Tech</h3>
+<div class="company-grid">
+<div class="company-card"><div class="cc-tag">Google</div><h4><a href="https://www.cnbc.com/2025/10/01/google-cloud-unit-layoffs.html" target="_blank">Design cuts in Cloud</a></h4><p>100+ design/UX research roles cut (Oct 2025), halving some teams. Targeted quantitative UX research. Eliminated a third of managers overseeing small teams. Reallocating to AI engineering.</p><div class="cc-sources"><a href="https://www.finalroundai.com/blog/google-cloud-design-staff-layoffs-2025" target="_blank">FinalRoundAI</a> &middot; <a href="https://www.thevoiceofuser.com/google-clouds-cuts-and-the-bigger-story-why-uxr-roles-are-disappearing/" target="_blank">Voice of User</a></div></div>
+<div class="company-card"><div class="cc-tag">Meta</div><h4><a href="https://www.fastcompany.com/91453837/meta-hires-alan-dye-apple-top-design-exec" target="_blank">Hired Apple's design chief</a></h4><p>Alan Dye joined as CDO (Dec 2025). New design studio for hardware, software, AI. 1:50 manager-to-engineer ratio. Restructured AI org twice, then created "Superintelligence Labs" (2026).</p><div class="cc-sources"><a href="https://www.axios.com/2025/05/27/meta-ai-restructure-2025-agi-llama" target="_blank">Axios</a> &middot; <a href="https://builtin.com/artificial-intelligence/meta-superintelligence-reorg" target="_blank">Built In</a></div></div>
+<div class="company-card"><div class="cc-tag">Microsoft</div><h4><a href="https://fortune.com/2025/12/03/microsoft-employees-ai-native-vp-design-liz-danzico/" target="_blank">200-person AI-native push</a></h4><p>VP Liz Danzico leads ~200 design/research team. "Every person AI-native by end of fiscal year." In-house AI course. "Tremendously positive" response. Workers "more satisfied and energized."</p><div class="cc-sources"><a href="https://www.cnbc.com/2026/03/17/microsoft-copilot-ai-suleyman.html" target="_blank">CNBC Copilot reorg</a></div></div>
+<div class="company-card"><div class="cc-tag">Apple</div><h4><a href="https://fortune.com/2025/12/08/apple-executive-exodus-2026-new-leadership-team-rising-stars-tim-cook-successor/" target="_blank">Design leadership exodus</a></h4><p>Lost Dye and Sorrentino to Meta. Promoted Stephen Lemay (25yr veteran). Lost AI lead Pang to Meta (~100 engineers). AI moved under Federighi's software engineering org.</p><div class="cc-sources"><a href="https://appleinsider.com/articles/25/12/23/apples-ai-team-is-bigger-than-reported-strategy-reinforced-with-latest-restructure" target="_blank">AppleInsider</a></div></div>
+<div class="company-card"><div class="cc-tag">Spotify</div><h4><a href="https://news.designrush.com/spotify-wrapped-2025-first-tv-ad-after-ai-backlash" target="_blank">AI backlash and reversal</a></h4><p>2024 Wrapped panned as "AI slop." 2025 deliberately analog. "If brands look to AI for inspiration, we did the opposite." 80% of engineering uses AI tools. New AI research lab with major labels.</p><div class="cc-sources"><a href="https://www.fastcompany.com/91451332/spotify-wrapped-2025-goes-analog-in-the-age-of-ai" target="_blank">Fast Company</a> &middot; <a href="https://newsroom.spotify.com/2025-10-16/artist-first-ai-music-spotify-collaboration/" target="_blank">Spotify Newsroom</a></div></div>
+<div class="company-card"><div class="cc-tag">Airbnb</div><h4><a href="https://diginomica.com/checking-airbnbs-ai-thinking-ceo-brian-cheksy-has-no-reservations-about-prospects-success" target="_blank">Design-led AI</a></h4><p>Chesky: "We don't think AI search in travel is just text. Rich UI required." Hired Meta GenAI lead as CTO (Jan 2026). EPD "triforce" gives design equal voice from inception.</p><div class="cc-sources"><a href="https://techcrunch.com/2026/02/13/airbnb-plans-to-bake-in-ai-features-for-search-discovery-and-support/" target="_blank">TechCrunch</a> &middot; <a href="https://www.cnbc.com/2026/01/14/airbnb-tech-chief-meta-ai.html" target="_blank">CNBC</a></div></div>
+</div>
+</div>
+
+<div class="detail-section">
+<h3>High-Growth Startups</h3>
+<div class="company-grid">
+<div class="company-card"><div class="cc-tag">Vercel</div><h4><a href="https://vercel.com/blog/design-engineering-at-vercel" target="_blank">Design Engineering as role</a></h4><p>$200K+ with Director-level leader. Three modes: collaborate, embed, or ship independently. Write code, shaders, 3D. Used v0 to build Ship 2025 conference platform.</p><div class="cc-sources"><a href="https://vercel.com/blog/designing-and-building-the-vercel-ship-conference-platform" target="_blank">Ship 2025 case study</a></div></div>
+<div class="company-card"><div class="cc-tag">Notion</div><h4><a href="https://www.chatprd.ai/how-i-ai/how-notion-designs-with-ai-brian-lovins-prototype-playground-and-claude-code-workflows" target="_blank">Prototype Playground</a></h4><p>Brian Lovin's shared Next.js repo + Claude Code. Custom Figma MCP integration gets to 80% in seconds. "Haven't written front-end code in 3 months." Designers prototype in production with feature flags.</p><div class="cc-sources"><a href="https://rogerwong.me/2026/03/notion-prototype-playground-brian-lovin" target="_blank">Roger Wong summary</a></div></div>
+<div class="company-card"><div class="cc-tag">Linear</div><h4><a href="https://www.lennysnewsletter.com/p/how-linear-builds-product" target="_blank">No PMs, founder-designer</a></h4><p>CEO Karri Saarinen (ex-Airbnb design). ~80 employees, $1.25B. No PMs. Project-based teams. Paid 1-5 day work trials. AI agents on separate branches alongside human teams.</p><div class="cc-sources"><a href="https://newsletter.pragmaticengineer.com/p/linear" target="_blank">Pragmatic Engineer</a> &middot; <a href="https://www.ideaplan.io/blog/how-linear-grew-to-1-billion-with-35k-marketing-spend" target="_blank">IdeaPlan</a></div></div>
+<div class="company-card"><div class="cc-tag">Stripe</div><h4><a href="https://stripe.com/jobs/listing/design-engineer-expansion/6299301" target="_blank">Design Engineers in pods</a></h4><p>Collective pod (awareness) and Expansion pod (tools, conversion). Team spans designers, engineers, PMs, producers, researchers, writers. "Friction logs" for UX analysis.</p><div class="cc-sources"><a href="https://newsletter.pragmaticengineer.com/p/stripe-part-2" target="_blank">Pragmatic Engineer</a></div></div>
+<div class="company-card"><div class="cc-tag">Superhuman</div><h4><a href="https://www.lennysnewsletter.com/p/superhumans-secret-to-success-rahul-vohra" target="_blank">Game design principles</a></h4><p>CEO Vohra (ex-RuneScape designer). 6 months on typography, 2 years rewriting Chrome for sub-100ms. AI progression: on-demand to always-on to agentic. Acquired by Grammarly July 2025.</p><div class="cc-sources"><a href="https://blog.superhuman.com/ai-native-future-of-work/" target="_blank">AI-Native Future</a></div></div>
+<div class="company-card"><div class="cc-tag">Canva</div><h4><a href="https://www.canva.com/newsroom/news/canva-create-2025/" target="_blank">Creative Operating System</a></h4><p>Magic Studio used 16B+ times. Acquired Leonardo.ai. Launched Canva Code. 220M+ users do design work through AI. Positioned as platform where non-designers do design.</p></div>
+</div>
+</div>
+
+<div class="detail-section">
+<h3>Design Agencies and Consultancies</h3>
+<div class="company-grid">
+<div class="company-card"><div class="cc-tag">IDEO</div><h4><a href="https://fortune.com/asia/2025/04/30/ideo-names-mike-peng-ceo-ai-design-thinking/" target="_blank">The defining collapse</a></h4><p>$300M to ~$100M revenue. 725 to under 400 staff. Munich/Tokyo closed. Three CEOs in five years. New CEO Peng repositioning as "creative partner for AI without losing human compass."</p><div class="cc-sources"><a href="https://fortune.com/2025/12/09/ai-mediocre-results-human-creativity-ideo-ceo-mike-peng/" target="_blank">Fortune: Mediocrity</a></div></div>
+<div class="company-card"><div class="cc-tag">Accenture Song</div><h4><a href="https://www.cnbc.com/2025/09/26/accenture-plans-on-exiting-staff-who-cant-be-reskilled-on-ai.html" target="_blank">Absorb and reskill</a></h4><p>Absorbed Fjord and Work&amp;Co. 11,000+ laid off. "Exit" staff who can't reskill. Trained 550K on GenAI. AI headcount 40K to 77K. All divisions merged into "Reinvention Services."</p><div class="cc-sources"><a href="https://newsroom.accenture.com/news/2024/accenture-completes-acquisition-of-global-digital-product-company-work-and-co" target="_blank">Work&amp;Co acquisition</a></div></div>
+<div class="company-card"><div class="cc-tag">McKinsey Design</div><h4><a href="https://www.finalroundai.com/blog/mckinsey-layoffs-tech-employees" target="_blank">Pyramid to obelisk</a></h4><p>360-400 people laid off (2024), 200 tech roles (late 2025). Thousands of internal AI agents for junior tasks. Shifting from "pyramid" to "obelisk": fewer, more senior + AI.</p></div>
+<div class="company-card"><div class="cc-tag">Pentagram</div><h4><a href="https://gdusa.com/pentagram-federal-website-generates-ai-controversy/" target="_blank">Partnership model survives</a></h4><p>24 owner-partners. Paula Scher used Midjourney for 1,500+ federal icons from hand-made inputs. Most publicly debated AI use by a major design firm.</p><div class="cc-sources"><a href="https://www.creativebloq.com/design/pentagrams-controversial-website-design-marks-a-new-era-in-the-ai-art-debate" target="_blank">Creative Bloq</a></div></div>
+<div class="company-card"><div class="cc-tag">ustwo</div><h4><a href="https://www.healthtechdigital.com/ustwo-accelerates-global-momentum-in-2025-as-us-expansion-and-healthcare-growth-drive-performance/" target="_blank">Pivoting to AI briefs</a></h4><p>40%+ new briefs AI-related. Hired dedicated Head of AI (ex-Presidential Innovation Fellow). Built AI-powered products. 70% of engagements now multi-year.</p><div class="cc-sources"><a href="https://www.thedrum.com/news/2025/01/29/why-design-studio-helping-brands-unlock-the-benefits-digital-coaching" target="_blank">The Drum</a></div></div>
+<div class="company-card"><div class="cc-tag">frog / Capgemini</div><h4><a href="https://www.frog.co/designmind/augmenting-designops-with-ai-powered-systems" target="_blank">Scale through parent</a></h4><p>Scaled to 2,200+ staff across 35+ studios. "Discipline-first to capability-first" team models. Leveraging parent company AI infrastructure.</p><div class="cc-sources"><a href="https://www.campaignasia.com/article/capgemini-invent-rolls-out-frog-design-across-apac/471315" target="_blank">Campaign Asia</a></div></div>
+</div>
+</div>
+
+<div class="detail-section">
+<h3>AI-Native Companies</h3>
+<div class="company-grid">
+<div class="company-card"><div class="cc-tag">Anthropic</div><h4><a href="https://www.lennysnewsletter.com/p/the-design-process-is-dead" target="_blank">"The design process is dead"</a></h4><p>Jenny Wen ships with one engineer. 30-40% mocking (was 60-70%), 30-40% pairing. Designs for non-deterministic systems and model trajectory. Uses Claude Cowork for research synthesis.</p><div class="cc-sources"><a href="https://doublediamondnyc.substack.com/p/jenny-wen-design-lead-at-anthropic" target="_blank">Double Diamond profile</a> &middot; <a href="https://creatoreconomy.so/p/inside-anthropic-claude-cowork-tutorial-jenny-wen" target="_blank">Cowork tutorial</a></div></div>
+<div class="company-card"><div class="cc-tag">OpenAI</div><h4><a href="https://newsletter.eng-leadership.com/p/inside-openais-engineering-culture" target="_blank">Flat structure, extreme ratios</a></h4><p>Two-layer org. $300K universal base. 1 PM to 30 engineers (1:40 on Codex). DRI model. "Engineers own problems, PMs prototype with code, designers write code." 3-5 parallel teams per problem.</p></div>
+<div class="company-card"><div class="cc-tag">Cursor</div><h4><a href="https://dnyuz.com/2025/12/11/cursor-launches-an-ai-coding-tool-for-designers/" target="_blank">No dedicated design team</a></h4><p>~182 employees, $1B ARR. Almost entirely engineers/researchers. Visual Editor (Dec 2025) for designers. 2-day work trials, AI tools prohibited in first coding round.</p><div class="cc-sources"><a href="https://getlatka.com/companies/cursor.com/team" target="_blank">Getlatka</a> &middot; <a href="https://jobsbyculture.com/companies/cursor" target="_blank">JobsByCulture</a></div></div>
+<div class="company-card"><div class="cc-tag">Midjourney</div><h4><a href="https://electroiq.com/stats/how-many-people-work-at-midjourney/" target="_blank">Revenue per employee king</a></h4><p>~150 employees, $500M revenue. Self-funded. 11-15% design staff. Founded with 11 people, launched on Discord. UX for bot commands and image grids: a fundamentally different design challenge.</p></div>
+<div class="company-card"><div class="cc-tag">Runway</div><h4><a href="https://himalayas.app/companies/runway/jobs/product-designer" target="_blank">Design Engineer at $250K+</a></h4><p>Prototyping "AI video experiences and agentic tools." Bonus for Claude Code/Cursor. Includes "artists" alongside engineers and designers. Creative skill valued alongside technical.</p><div class="cc-sources"><a href="https://job-boards.greenhouse.io/runwayml" target="_blank">Greenhouse listings</a></div></div>
+<div class="company-card"><div class="cc-tag">Perplexity</div><h4><a href="https://www.nngroup.com/articles/perplexity-henry-modisett/" target="_blank">Lean trust-first design</a></h4><p>Head of Design Modisett: "People want info fast and want to trust it. Quite a simple design problem." Sources alongside AI answers. Hiring "Lead Design Engineer" over Product Designer.</p></div>
+</div>
+</div>
+<!-- TAGGED SOURCE CATALOG -->
+<section class="tier" id="sources">
+<div class="tier-label">Tier 3b</div>
+<h2>Tagged Source Catalog</h2>
+<p>All 45 key sources tagged by insight type. Filter by what you need: team structure, roles, tools, quality, workflows, or change management.</p>
+</section>
+
+<div class="detail-section">
+<h3>Industry surveys and data</h3>
+<div class="source-list">
+<div class="source"><div class="source-num">01</div><div><h4><a href="https://www.figma.com/reports/ai-2025/" target="_blank">Figma 2025 AI Report</a></h4><div class="source-meta">Figma / 2,500 respondents / Apr 2025</div><div class="source-desc"><strong>78% say AI enhances efficiency, only 32% trust output.</strong> 59% devs use AI for core work vs. 31% designers. Agentic AI fastest-growing.</div><div class="source-tags"><span class="stag stag-tools">Tools</span><span class="stag">Data</span></div></div></div>
+<div class="source"><div class="source-num">02</div><div><h4><a href="https://www.figma.com/blog/2025-shifting-roles-report/" target="_blank">Figma Shifting Roles 2025</a></h4><div class="source-meta">Figma / 1,199 surveyed / Sep 2025</div><div class="source-desc"><strong>56% of non-designers</strong> engage heavily in design tasks. <strong>64% identify with 2+ roles.</strong></div><div class="source-tags"><span class="stag stag-roles">Roles</span><span class="stag stag-team">Team structure</span></div></div></div>
+<div class="source"><div class="source-num">03</div><div><h4><a href="https://www.stateofaidesign.com/" target="_blank">State of AI in Design 2025</a></h4><div class="source-meta">Foundation Capital / 400+ designers</div><div class="source-desc"><strong>89% say AI improved workflow.</strong> AI gets to "60%" but last 40% remains human. 96% learned AI through self-teaching.</div><div class="source-tags"><span class="stag stag-workflows">Workflows</span><span class="stag stag-team">Team structure</span><span class="stag">Data</span></div></div></div>
+<div class="source"><div class="source-num">04</div><div><h4><a href="https://adsknews.autodesk.com/en/news/ai-jobs-report/" target="_blank">AI Jobs Report: Design Skills #1</a></h4><div class="source-meta">Autodesk + GlobalData / 3M+ listings</div><div class="source-desc"><strong>Design surpassed coding as #1 in-demand AI skill.</strong> AI UX Designer growing at 134.5%.</div><div class="source-tags"><span class="stag stag-roles">Roles</span><span class="stag">Data</span></div></div></div>
+<div class="source"><div class="source-num">05</div><div><h4><a href="https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/the-business-value-of-design" target="_blank">Business Value of Design</a></h4><div class="source-meta">McKinsey / 300 companies, 5 years</div><div class="source-desc">Top-quartile design performers: <strong>32% higher revenue growth.</strong> The executive business case.</div><div class="source-tags"><span class="stag">Data</span><span class="stag">Impact</span></div></div></div>
+<div class="source"><div class="source-num">06</div><div><h4><a href="https://www.deloitte.com/us/en/insights/topics/talent/ai-roi-and-team-structure.html" target="_blank">Team Structure and AI Outcomes</a></h4><div class="source-meta">Deloitte / 2025</div><div class="source-desc">93% of tech spending on technology, 7% on training. Best AI teams are cognitively diverse.</div><div class="source-tags"><span class="stag stag-team">Team structure</span><span class="stag">Data</span></div></div></div>
+</div>
+</div>
+
+<div class="detail-section">
+<h3>How roles and teams are changing</h3>
+<div class="source-list">
+<div class="source"><div class="source-num">07</div><div><h4><a href="https://www.lewis-lin.com/blog/the-ratio-has-flipped-how-ai-should-change-how-you-structure-product-teams" target="_blank">The Ratio Has Flipped</a></h4><div class="source-meta">Lewis C. Lin / Feb 2026</div><div class="source-desc">"Hire for taste, not craft." AI inverted the judgment-to-execution ratio.</div><div class="source-tags"><span class="stag stag-team">Team structure</span><span class="stag stag-roles">Roles</span></div></div></div>
+<div class="source"><div class="source-num">08</div><div><h4><a href="https://www.lennysnewsletter.com/p/the-design-process-is-dead" target="_blank">The Design Process Is Dead</a></h4><div class="source-meta">Jenny Wen, Anthropic / Lenny's Podcast / Mar 2026</div><div class="source-desc">Ships with 1 engineer. Designs for non-deterministic systems. 30-40% Figma (was 60-70%).</div><div class="source-tags"><span class="stag stag-roles">Roles</span><span class="stag stag-workflows">Workflows</span><span class="stag">AI-native</span></div></div></div>
+<div class="source"><div class="source-num">09</div><div><h4><a href="https://sfstandard.com/2026/03/05/engineer-2025-ai-land-everyone-s-builder-now/" target="_blank">Everyone's a 'Builder' Now</a></h4><div class="source-meta">SF Standard / Mar 2026</div><div class="source-desc">Traditional assembly line collapsing. Meta PMs, Walmart, Applied Compute all adopting "builder" title.</div><div class="source-tags"><span class="stag stag-roles">Roles</span><span class="stag stag-team">Team structure</span></div></div></div>
+<div class="source"><div class="source-num">10</div><div><h4><a href="https://www.nngroup.com/articles/state-of-ux-2026/" target="_blank">State of UX 2026</a></h4><div class="source-meta">NNG / Late 2025</div><div class="source-desc">"Post-hype AI." UX pros rebranded as "Product Strategists." ROI-blind research teams cut.</div><div class="source-tags"><span class="stag stag-roles">Roles</span><span class="stag">Data</span></div></div></div>
+<div class="source"><div class="source-num">11</div><div><h4><a href="https://www.nngroup.com/articles/future-proof-designer/" target="_blank">The Future-Proof Designer</a></h4><div class="source-meta">NNG / Sara Paul / Jun 2025</div><div class="source-desc">4 strategies: strategic scope, storytelling, AI with judgment, tactical to strategic shift.</div><div class="source-tags"><span class="stag stag-roles">Roles</span><span class="stag">Change mgmt</span></div></div></div>
+<div class="source"><div class="source-num">12</div><div><h4><a href="https://mattstromawn.com/writing/product-design-talent-crisis/" target="_blank">The Product Design Talent Crisis</a></h4><div class="source-meta">Matt Strom-Awn / 2025</div><div class="source-desc">Entry-level dropped 43%. Only 1% internships. Super-ICs dominate. "Talent cliff within a decade."</div><div class="source-tags"><span class="stag stag-roles">Roles</span><span class="stag">Talent</span></div></div></div>
+</div>
+</div>
+
+<div class="detail-section">
+<h3>Company case studies</h3>
+<div class="source-list">
+<div class="source"><div class="source-num">13</div><div><h4><a href="https://vercel.com/blog/design-engineering-at-vercel" target="_blank">Design Engineering at Vercel</a></h4><div class="source-meta">Vercel / 2025</div><div class="source-desc">$200K+ role. Production code, shaders, 3D. Three operating modes. No fixed toolset.</div><div class="source-tags"><span class="stag stag-roles">Roles</span><span class="stag stag-team">Team structure</span><span class="stag">Startup</span></div></div></div>
+<div class="source"><div class="source-num">14</div><div><h4><a href="https://www.chatprd.ai/how-i-ai/how-notion-designs-with-ai-brian-lovins-prototype-playground-and-claude-code-workflows" target="_blank">Notion Prototype Playground</a></h4><div class="source-meta">Brian Lovin / How I AI / 2025</div><div class="source-desc">Shared Next.js repo + Claude Code. Gets to 80% in seconds. Feature flag prototyping.</div><div class="source-tags"><span class="stag stag-tools">Tools</span><span class="stag stag-workflows">Workflows</span><span class="stag">Startup</span></div></div></div>
+<div class="source"><div class="source-num">15</div><div><h4><a href="https://fortune.com/2025/12/03/microsoft-employees-ai-native-vp-design-liz-danzico/" target="_blank">Microsoft AI-Native Design</a></h4><div class="source-meta">Fortune / Dec 2025</div><div class="source-desc">~200 designers. In-house AI course. "AI-native by end of fiscal year."</div><div class="source-tags"><span class="stag stag-team">Team structure</span><span class="stag">Change mgmt</span><span class="stag">Big tech</span></div></div></div>
+<div class="source"><div class="source-num">16</div><div><h4><a href="https://fortune.com/asia/2025/04/30/ideo-names-mike-peng-ceo-ai-design-thinking/" target="_blank">IDEO Names Mike Peng CEO</a></h4><div class="source-meta">Fortune / Apr 2025</div><div class="source-desc">$300M to ~$100M. 725 to under 400 staff. Repositioning as creative AI partner.</div><div class="source-tags"><span class="stag">Agency</span><span class="stag">Change mgmt</span><span class="stag stag-quality">Quality</span></div></div></div>
+<div class="source"><div class="source-num">17</div><div><h4><a href="https://newsletter.eng-leadership.com/p/inside-openais-engineering-culture" target="_blank">Inside OpenAI's Engineering Culture</a></h4><div class="source-meta">Eng Leadership / 2025</div><div class="source-desc">Flat two-layer. 1:30 PM-to-engineer. DRI model. Parallel teams per problem.</div><div class="source-tags"><span class="stag stag-team">Team structure</span><span class="stag">AI-native</span></div></div></div>
+<div class="source"><div class="source-num">18</div><div><h4><a href="https://www.cnbc.com/2025/09/26/accenture-plans-on-exiting-staff-who-cant-be-reskilled-on-ai.html" target="_blank">Accenture AI Reskilling</a></h4><div class="source-meta">CNBC / Sep 2025</div><div class="source-desc">"Exit" non-reskillable staff. 550K trained. AI headcount 40K to 77K.</div><div class="source-tags"><span class="stag">Agency</span><span class="stag">Change mgmt</span></div></div></div>
+<div class="source"><div class="source-num">19</div><div><h4><a href="https://diginomica.com/checking-airbnbs-ai-thinking-ceo-brian-cheksy-has-no-reservations-about-prospects-success" target="_blank">Airbnb Design-Led AI</a></h4><div class="source-meta">Diginomica / 2025</div><div class="source-desc">EPD "triforce." "AI search in travel needs rich UI." Hired Meta GenAI lead as CTO.</div><div class="source-tags"><span class="stag stag-team">Team structure</span><span class="stag">Big tech</span></div></div></div>
+</div>
+</div>
+
+<div class="detail-section">
+<h3>Tools, workflows, and prototyping</h3>
+<div class="source-list">
+<div class="source"><div class="source-num">20</div><div><h4><a href="https://www.lennysnewsletter.com/p/a-designers-guide-to-ai-building" target="_blank">Designer's Guide to Cursor</a></h4><div class="source-meta">Joel Unger, Atlassian / May 2025</div><div class="source-desc">"10x faster than Figma." Improves collaboration. Frees designers for higher creativity.</div><div class="source-tags"><span class="stag stag-tools">Tools</span><span class="stag stag-workflows">Workflows</span></div></div></div>
+<div class="source"><div class="source-num">21</div><div><h4><a href="https://adplist.substack.com/p/a-designers-guide-to-cursor-and-claude" target="_blank">ADPList Cursor Course</a></h4><div class="source-meta">Felix Lee / Late 2025</div><div class="source-desc"><strong>8,000+ designers</strong> from Google, Apple, Meta. "Designers who build: $150-400/hr."</div><div class="source-tags"><span class="stag stag-tools">Tools</span><span class="stag">Change mgmt</span></div></div></div>
+<div class="source"><div class="source-num">22</div><div><h4><a href="https://www.figma.com/blog/config-2025-press-release/" target="_blank">Figma Config / MCP / Make</a></h4><div class="source-meta">Figma / May 2025</div><div class="source-desc">Make generates code. MCP connects to Cursor/Claude Code. Sites turns designs into websites. 30% of MAUs are devs.</div><div class="source-tags"><span class="stag stag-tools">Tools</span><span class="stag stag-workflows">Workflows</span></div></div></div>
+<div class="source"><div class="source-num">23</div><div><h4><a href="https://www.toools.design/blog-posts/vibe-coding-tools-for-designers" target="_blank">Vibe Coding Tools 2026</a></h4><div class="source-meta">Toools.design / 2026</div><div class="source-desc">Collins Word of the Year 2025. MIT Breakthrough 2026. Designers shipping frontends without coding background.</div><div class="source-tags"><span class="stag stag-tools">Tools</span></div></div></div>
+<div class="source"><div class="source-num">24</div><div><h4><a href="https://dnyuz.com/2025/12/11/cursor-launches-an-ai-coding-tool-for-designers/" target="_blank">Cursor Visual Editor</a></h4><div class="source-meta">WIRED / Dec 2025</div><div class="source-desc">$1B ARR, ~182 employees. "Melded the design world and coding world together."</div><div class="source-tags"><span class="stag stag-tools">Tools</span><span class="stag">AI-native</span></div></div></div>
+</div>
+</div>
+
+<div class="detail-section">
+<h3>Quality, cautionary, and critical perspectives</h3>
+<div class="source-list">
+<div class="source"><div class="source-num">25</div><div><h4><a href="https://fortune.com/2025/05/09/klarna-ai-humans-return-on-investment/" target="_blank">Klarna AI Reversal</a></h4><div class="source-meta">Fortune / May 2025</div><div class="source-desc">"Focused too much on efficiency. Result was lower quality." <strong>55% of AI layoff companies regret it.</strong></div><div class="source-tags"><span class="stag stag-quality">Quality</span><span class="stag">Cautionary</span></div></div></div>
+<div class="source"><div class="source-num">26</div><div><h4><a href="https://fosterfletcher.com/gravity-of-the-generic/" target="_blank">Gravity of the Generic</a></h4><div class="source-meta">R. Foster-Fletcher / 2025-26</div><div class="source-desc">"Creative scars" persist. Homogeneity happens passively unless actively resisted.</div><div class="source-tags"><span class="stag stag-quality">Quality</span><span class="stag">Cautionary</span></div></div></div>
+<div class="source"><div class="source-num">27</div><div><h4><a href="https://cacm.acm.org/news/the-ai-deskilling-paradox/" target="_blank">The AI Deskilling Paradox</a></h4><div class="source-meta">ACM / 2025</div><div class="source-desc">Workers became more confident but less skilled. "Visible only in hindsight."</div><div class="source-tags"><span class="stag">Cautionary</span><span class="stag">Change mgmt</span></div></div></div>
+<div class="source"><div class="source-num">28</div><div><h4><a href="https://thinkpol.ca/2026/03/24/the-junior-developer-pipeline-is-broken-and-nobody-has-a-plan-to-fix-it/" target="_blank">Junior Pipeline Broken</a></h4><div class="source-meta">ThinkPol / Mar 2026</div><div class="source-desc">Harvard: junior employment declined <strong>7.7%</strong> at AI-adopting firms. "Eating its seed corn."</div><div class="source-tags"><span class="stag">Talent</span><span class="stag">Cautionary</span></div></div></div>
+<div class="source"><div class="source-num">29</div><div><h4><a href="https://fortune.com/2025/12/09/ai-mediocre-results-human-creativity-ideo-ceo-mike-peng/" target="_blank">AI Produces 'Mediocre' Results</a></h4><div class="source-meta">Mike Peng, IDEO CEO / Fortune / Dec 2025</div><div class="source-desc">"Creativity is about not being mediocre." AI's reliance on averages produces mediocrity.</div><div class="source-tags"><span class="stag stag-quality">Quality</span><span class="stag">Agency</span></div></div></div>
+</div>
+</div>
+
+<div class="detail-section">
+<h3>Discovery, experimentation, and government frameworks</h3>
+<div class="source-list">
+<div class="source"><div class="source-num">30</div><div><h4><a href="https://www.producttalk.org/getting-started-with-discovery/" target="_blank">Continuous Discovery</a></h4><div class="source-meta">Teresa Torres / Product Talk</div><div class="source-desc">Opportunity Solution Tree. Product Trio model. Discovery as continuous practice.</div><div class="source-tags"><span class="stag stag-workflows">Workflows</span><span class="stag">Discovery</span></div></div></div>
+<div class="source"><div class="source-num">31</div><div><h4><a href="https://www.svpg.com/dual-track-agile/" target="_blank">Dual-Track Agile</a></h4><div class="source-meta">Marty Cagan, SVPG</div><div class="source-desc">Parallel Discovery and Delivery tracks. Validate during discovery.</div><div class="source-tags"><span class="stag stag-workflows">Workflows</span><span class="stag">Discovery</span></div></div></div>
+<div class="source"><div class="source-num">32</div><div><h4><a href="https://www.gov.uk/service-manual/agile-delivery/how-the-discovery-phase-works" target="_blank">GDS Discovery Phase</a></h4><div class="source-meta">UK GDS</div><div class="source-desc">Spending requests rejected because discovery wasn't robust. 4-8 weeks.</div><div class="source-tags"><span class="stag">Government</span><span class="stag">Discovery</span></div></div></div>
+<div class="source"><div class="source-num">33</div><div><h4><a href="https://gds.blog.gov.uk/2025/02/10/launching-the-artificial-intelligence-playbook-for-the-uk-government/" target="_blank">UK GDS AI Playbook</a></h4><div class="source-meta">GDS / Feb 2025</div><div class="source-desc">10 principles for safe, responsible AI. 50+ experts, 20+ departments.</div><div class="source-tags"><span class="stag">Government</span><span class="stag">Ethics</span></div></div></div>
+<div class="source"><div class="source-num">34</div><div><h4><a href="https://www.charterworks.com/ai-leadership-playbook/" target="_blank">Charter AI Leadership Playbook</a></h4><div class="source-meta">Charter / Sep 2025</div><div class="source-desc">"Bolting transformational technologies onto existing processes produces suboptimal results."</div><div class="source-tags"><span class="stag">Change mgmt</span></div></div></div>
+<div class="source"><div class="source-num">35</div><div><h4><a href="https://www.nngroup.com/articles/perplexity-henry-modisett/" target="_blank">UX of AI: Perplexity</a></h4><div class="source-meta">NNG / Henry Modisett / 2025</div><div class="source-desc">"People want info fast and want to trust it. Quite a simple design problem." Sources alongside AI answers.</div><div class="source-tags"><span class="stag stag-workflows">Workflows</span><span class="stag">AI-native</span></div></div></div>
+</div>
+</div>
+<!-- PROVOCATIONS -->
+<section class="tier" id="quotes">
+<div class="tier-label">Reference</div>
+<h2>Provocations</h2>
+<p>The sharpest quotes. For sparking discussion. Click sources to read the originals.</p>
+</section>
+
+<div class="detail-section" style="padding-top:20px">
+<div class="quote-card"><blockquote>"Hire for taste, not craft."</blockquote><cite>Lewis C. Lin &mdash; <a href="https://www.lewis-lin.com/blog/the-ratio-has-flipped-how-ai-should-change-how-you-structure-product-teams" target="_blank">The Ratio Has Flipped (Feb 2026)</a></cite></div>
+<div class="quote-card"><blockquote>"The design process is dead. The double diamond, the diverge-converge gospel, is dead."</blockquote><cite>Jenny Wen, Head of Design, Claude &mdash; <a href="https://www.lennysnewsletter.com/p/the-design-process-is-dead" target="_blank">Lenny's Podcast (Mar 2026)</a></cite></div>
+<div class="quote-card"><blockquote>"Most teams are still trying to 'add AI' into what they already do. That approach guarantees mediocrity."</blockquote><cite>Cristina Stoica &mdash; <a href="https://medium.com/@cri3tina.stoica/2026-manoeuvring-the-next-era-of-designops-ac8f8698e527" target="_blank">Manoeuvring the Next Era of DesignOps (Jan 2026)</a></cite></div>
+<div class="quote-card"><blockquote>"We do not think AI search in travel is just text. It's going to have rich user interface experiences."</blockquote><cite>Brian Chesky, CEO, Airbnb &mdash; <a href="https://diginomica.com/checking-airbnbs-ai-thinking-ceo-brian-cheksy-has-no-reservations-about-prospects-success" target="_blank">Diginomica (2025)</a></cite></div>
+<div class="quote-card"><blockquote>"Creativity is all about not being mediocre and being on the edge."</blockquote><cite>Mike Peng, CEO, IDEO &mdash; <a href="https://fortune.com/2025/12/09/ai-mediocre-results-human-creativity-ideo-ceo-mike-peng/" target="_blank">Fortune (Dec 2025)</a></cite></div>
+<div class="quote-card"><blockquote>"Allowing the Gravity of the Generic to move an organisation to the centre does not require a decision. Only the absence of one."</blockquote><cite>R. Foster-Fletcher &mdash; <a href="https://fosterfletcher.com/gravity-of-the-generic/" target="_blank">Gravity of the Generic (2025-26)</a></cite></div>
+<div class="quote-card"><blockquote>"I haven't written a single line of front-end code in 3 months."</blockquote><cite>Brian Lovin, Notion &mdash; <a href="https://www.chatprd.ai/how-i-ai/how-notion-designs-with-ai-brian-lovins-prototype-playground-and-claude-code-workflows" target="_blank">How I AI podcast (2025)</a></cite></div>
+<div class="quote-card"><blockquote>"Design helps you decide what you should make. With AI accelerating everything, you better be the one making the right thing."</blockquote><cite>Forrester Research &mdash; <a href="https://www.forrester.com/blogs/figma-config-2025-in-an-ai-world-design-matters-more-than-ever/" target="_blank">Config 2025 Analysis (May 2025)</a></cite></div>
+<div class="quote-card"><blockquote>"We focused too much on efficiency and cost. The result was lower quality."</blockquote><cite>Klarna &mdash; <a href="https://fortune.com/2025/05/09/klarna-ai-humans-return-on-investment/" target="_blank">Fortune (May 2025)</a></cite></div>
+<div class="quote-card"><blockquote>"If brands are looking to the future or to AI for inspiration, we did the opposite."</blockquote><cite>Payman Kassaie, Spotify &mdash; <a href="https://www.fastcompany.com/91451332/spotify-wrapped-2025-goes-analog-in-the-age-of-ai" target="_blank">Fast Company (Dec 2025)</a></cite></div>
+<div class="quote-card"><blockquote>"Deskilling will be visible only in hindsight."</blockquote><cite>ACM / Microsoft Research / Carnegie Mellon &mdash; <a href="https://cacm.acm.org/news/the-ai-deskilling-paradox/" target="_blank">The AI Deskilling Paradox (2025)</a></cite></div>
+<div class="quote-card"><blockquote>"You basically can't map out all those flows. You have core primitives and specific states, but the possibilities are endless."</blockquote><cite>Jenny Wen, Anthropic &mdash; <a href="https://www.lennysnewsletter.com/p/the-design-process-is-dead" target="_blank">On designing for non-deterministic AI systems (Mar 2026)</a></cite></div>
+<div class="quote-card"><blockquote>"The full stack builder takes what would've been days or weeks as a conveyor belt between design, product, engineering... and gives it to an individual."</blockquote><cite>Aneesh Raman, LinkedIn &mdash; <a href="https://sfstandard.com/2026/03/05/engineer-2025-ai-land-everyone-s-builder-now/" target="_blank">SF Standard (Mar 2026)</a></cite></div>
+<div class="quote-card"><blockquote>"Bolting transformational technologies onto existing processes produces suboptimal results."</blockquote><cite>Charter &mdash; <a href="https://www.charterworks.com/ai-leadership-playbook/" target="_blank">AI Leadership Playbook (Sep 2025)</a></cite></div>
+<div class="quote-card"><blockquote>"People want information as fast as possible and want to trust that information. It's actually quite a simple design problem."</blockquote><cite>Henry Modisett, Head of Design, Perplexity &mdash; <a href="https://www.nngroup.com/articles/perplexity-henry-modisett/" target="_blank">NNG (2025)</a></cite></div>
+</div>
+
+<footer class="footer">
+<div>Design in the Age of AI: Combined Strategic Report</div>
+<div>130+ sources / 45 key citations / 2024 to 2026 / Compiled April 2026</div>
+</footer>
+</div>
+</body>
+</html>
