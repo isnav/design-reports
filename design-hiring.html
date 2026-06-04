@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design Hiring &amp; Interview Processes: A Documented Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ---- Locked design tokens. Do not change these values. ---- */
+  :root {
+    --bg: #fbf9f5;
+    --panel: #efebe3;
+    --ink: #1a1a1a;
+    --ink-soft: #555049;
+    --ink-faint: #918a7d;
+    --rule: #e6e0d4;
+    --accent: #e0492a;        /* orange-red, for highlights */
+    --accent-soft: #fae0d8;   /* orange-red tint */
+    --accent-2: #9a7700;      /* dark gold, readable yellow for text */
+    --accent-2-soft: #f6eecb;
+    --accent-3: #1a1a1a;
+    --yellow: #f5c518;        /* bright yellow, for contrast fills */
+    --yellow-soft: #fdf3c6;   /* yellow tint */
+    --measure: 78ch;
+    --margin-x: 4rem;
+    --font: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Major third scale (1.25), base 14px */
+    --t-0: 14px;        /* base */
+    --t-1: 1.25rem;     /* 17.5px */
+    --t-2: 1.5625rem;   /* 21.9px */
+    --t-3: 1.953rem;    /* 27.3px */
+    --t-4: 2.441rem;    /* 34.2px */
+    --t-small: 0.8rem;  /* 11.2px */
+  }
+
+  * { box-sizing: border-box; }
+
+  html { font-size: var(--t-0); scroll-behavior: smooth; overflow-x: clip; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: var(--t-0);
+    line-height: 1.6;
+    font-weight: 400;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- Reading progress indicator ---- */
+  #progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0%;
+    background: var(--accent);
+    z-index: 100;
+    transition: width 0.1s linear;
+  }
+
+  /* ---- Hamburger toggle + backdrop (shown only when TOC collapses) ---- */
+  #toc-toggle {
+    display: none;
+    position: fixed;
+    top: 1rem; left: 1rem;
+    z-index: 120;
+    width: 44px; height: 44px;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--ink);
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    align-items: center;
+    justify-content: center;
+  }
+  #toc-toggle svg { width: 20px; height: 20px; stroke: var(--accent); }
+  #toc-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(28,26,23,0.4);
+    z-index: 110;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  /* ---- Grid: TOC left, content right ---- */
+  .layout {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: var(--margin-x);
+    max-width: calc(240px + var(--margin-x) + var(--measure) + var(--margin-x) * 2);
+    margin: 0 auto;
+    padding: 4rem var(--margin-x);
+  }
+
+  /* ---- Floating table of contents ---- */
+  nav.toc {
+    position: sticky;
+    top: 4rem;
+    align-self: start;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    font-size: var(--t-small);
+    border-left: 1px solid var(--rule);
+  }
+  nav.toc .toc-label {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0 0 1rem 0.9rem;
+    font-size: 0.72rem;
+  }
+  nav.toc ul { list-style: none; margin: 0; padding: 0; }
+  nav.toc li { margin: 0; }
+  nav.toc a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    margin-left: -1px;
+    padding: 0.32rem 0 0.32rem 0.9rem;
+    display: block;
+    line-height: 1.35;
+    transition: color 0.12s ease, border-color 0.12s ease;
+  }
+  nav.toc li.sub a { padding-left: 1.7rem; color: var(--ink-faint); }
+  nav.toc a:hover { color: var(--ink); }
+  nav.toc a.active {
+    color: var(--ink);
+    background: var(--yellow-soft);
+    border-left-color: var(--accent);
+    border-radius: 0 6px 6px 0;
+    font-weight: 600;
+  }
+  nav.toc li.sub a.active { color: var(--ink); font-weight: 500; }
+
+  /* ---- Content column ---- */
+  main {
+    max-width: var(--measure);
+    min-width: 0;
+  }
+
+  .report-title {
+    font-size: var(--t-4);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.5rem;
+  }
+  .report-title::before {
+    content: "";
+    display: block;
+    width: 3rem;
+    height: 5px;
+    background: var(--accent);
+    border-radius: 3px;
+    margin-bottom: 1.1rem;
+  }
+  .report-meta {
+    font-size: var(--t-small);
+    color: var(--accent-2);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1.5rem;
+  }
+
+  h2 {
+    font-size: var(--t-2);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 3.5rem 0 1rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule);
+    position: relative;
+    scroll-margin-top: 4rem;
+  }
+  h2::before {
+    content: "";
+    position: absolute;
+    top: -1px; left: 0;
+    width: 2.75rem;
+    height: 3px;
+    background: var(--accent);
+  }
+  h3 {
+    font-size: var(--t-1);
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 2rem 0 0.75rem;
+    scroll-margin-top: 4rem;
+  }
+  h4 {
+    font-size: var(--t-0);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-2);
+    margin: 1.5rem 0 0.5rem;
+  }
+  p { margin: 0 0 1.1rem; }
+  ul.body, ol.body { margin: 0 0 1.1rem; padding-left: 1.3rem; }
+  ul.body li, ol.body li { margin: 0.4rem 0; }
+
+  /* ---- Summary + executive summary blocks ---- */
+  .summary {
+    background: var(--accent-soft);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    padding: 1.5rem 1.75rem;
+    margin: 0 0 2rem;
+  }
+  .summary .kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: var(--t-small);
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .summary p:last-child { margin-bottom: 0; }
+
+  .exec-summary { margin: 0 0 3rem; }
+
+  /* ---- Callout (yellow contrast block) ---- */
+  .callout {
+    background: var(--yellow-soft);
+    border-left: 3px solid var(--yellow);
+    border-radius: 0 4px 4px 0;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    font-size: var(--t-0);
+    color: var(--ink-soft);
+  }
+  .callout strong { color: var(--ink); }
+
+  /* ---- Inline highlight ---- */
+  mark, .hl {
+    background: var(--yellow-soft);
+    color: inherit;
+    padding: 0 0.15em;
+    border-radius: 2px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  /* ---- Stat row ---- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .stat {
+    border-top: 3px solid var(--accent);
+    padding-top: 0.6rem;
+  }
+  .stat .figure {
+    font-size: var(--t-2);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+  }
+  .stat:nth-child(3n+2) { border-top-color: var(--ink); }
+  .stat:nth-child(3n+2) .figure { color: var(--ink); }
+  .stat:nth-child(3n+3) { border-top-color: var(--accent-2); }
+  .stat:nth-child(3n+3) .figure { color: var(--accent-2); }
+  .stat .label { font-size: var(--t-small); color: var(--ink-soft); margin-top: 0.2rem; }
+
+  /* ---- Tables ---- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: var(--t-0);
+  }
+  th, td {
+    text-align: left;
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  thead th {
+    font-weight: 600;
+    color: var(--accent-2);
+    border-bottom: 2px solid var(--accent-2);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* ---- Citations with hover-to-source tooltip ---- */
+  .cite {
+    position: relative;
+    cursor: help;
+    font-size: 0.7em;
+    vertical-align: super;
+    line-height: 0;
+    color: var(--accent);
+    font-weight: 600;
+    margin-left: 1px;
+  }
+  .cite > a { color: inherit; text-decoration: none; }
+  .cite .src {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 1.4em;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    max-width: 70vw;
+    background: var(--ink);
+    color: #f5f0e8;
+    font-size: var(--t-small);
+    font-weight: 400;
+    line-height: 1.5;
+    vertical-align: baseline;
+    padding: 0.75rem 0.9rem;
+    border-radius: 4px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+    z-index: 50;
+    transition: opacity 0.12s ease;
+    pointer-events: none;
+  }
+  .cite .src .src-quote { display: block; margin-bottom: 0.5rem; font-style: italic; }
+  .cite .src .src-origin { display: block; color: #c7bfae; font-style: normal; }
+  .cite:hover .src, .cite:focus .src { visibility: visible; opacity: 1; }
+
+  /* ---- References list ---- */
+  .references { margin-top: 3rem; border-top: 1px solid var(--rule); padding-top: 1.5rem; }
+  .references ol { font-size: var(--t-small); color: var(--ink-soft); padding-left: 1.3rem; }
+  .references li { margin: 0.5rem 0; }
+  .references a { color: var(--accent-2); }
+
+  /* ---- Responsive: TOC collapses to a hamburger drawer ---- */
+  @media (max-width: 940px) {
+    :root { --margin-x: 1.25rem; }
+    .layout { grid-template-columns: 1fr; padding: 3.5rem 1.25rem 2rem; gap: 0; }
+    #toc-toggle { display: flex; }
+    #toc-backdrop.open { display: block; opacity: 1; }
+    nav.toc {
+      position: fixed;
+      top: 0; left: 0;
+      width: 280px;
+      max-width: 82vw;
+      height: 100%;
+      max-height: none;
+      background: var(--bg);
+      border-left: none;
+      border-right: 1px solid var(--rule);
+      box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+      padding: 4.5rem 1rem 1.5rem;
+      transform: translateX(-105%);
+      transition: transform 0.24s ease;
+      z-index: 115;
+      overflow-y: auto;
+    }
+    nav.toc.open { transform: translateX(0); }
+    table { font-size: var(--t-small); }
+    th, td { padding: 0.5rem 0.55rem; }
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<button id="toc-toggle" aria-label="Open table of contents" aria-expanded="false">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+</button>
+<div id="toc-backdrop"></div>
+
+<div class="layout">
+  <!-- TABLE OF CONTENTS: one entry per section. Use class="sub" for h3-level entries. -->
+  <nav class="toc" aria-label="Table of contents">
+    <div class="toc-label">Contents</div>
+    <ul>
+      <li><a href="#summary">Summary</a></li>
+      <li><a href="#executive-summary">Executive summary</a></li>
+      
+      <li><a href="#maturity">1. Frameworks by maturity</a></li>
+      <li><a href="#philosophy">2. Hiring philosophies</a></li>
+      <li><a href="#formats">3. Interview formats and criticisms</a></li>
+      <li><a href="#bigorgs">4. Real processes at named organizations</a></li>
+      <li class="sub"><a href="#meta">4.1 Meta / Facebook</a></li>
+      <li class="sub"><a href="#google">4.2 Google</a></li>
+      <li class="sub"><a href="#airbnb">4.3 Airbnb</a></li>
+      <li class="sub"><a href="#spotify">4.4 Spotify</a></li>
+      <li class="sub"><a href="#shopify">4.5 Shopify</a></li>
+      <li class="sub"><a href="#amazon">4.6 Amazon</a></li>
+      <li class="sub"><a href="#compare">4.7 Side-by-side comparison</a></li>
+      <li><a href="#gov">5. Public-sector processes</a></li>
+      <li class="sub"><a href="#gds">5.1 GDS (UK)</a></li>
+      <li class="sub"><a href="#usds">5.2 USDS SME-QA (US)</a></li>
+      <li><a href="#studios">6. Small studios and agencies</a></li>
+      <li><a href="#rubrics">7. Real rubrics and leveling</a></li>
+      <li><a href="#benchmarks">8. Benchmarks</a></li>
+      <li><a href="#notes">9. Notes on sources</a></li>
+
+      <li><a href="#references">References</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <h1 class="report-title">Design Hiring &amp; Interview Processes: A Documented Reference</h1>
+    <div class="report-meta">June 2026 &middot; Philosophies, formats, real company processes, and real rubrics</div>
+
+    <!-- SUMMARY: 2-3 sentence top-line takeaway. -->
+    <section class="summary" id="summary">
+      <div class="kicker">Summary</div>
+      <p>This report documents how design organizations actually run hiring and interview processes, drawn from primary sources (company and government materials, named practitioners, selection-science meta-analyses) and self-reported candidate accounts. It records the hiring philosophies, the interview formats and their published criticisms, the step-by-step interview loops at named organizations, the practices of small studios, and the actual rubrics, scorecards and leveling frameworks in use. It states what the sources report and does not offer recommendations.</p>
+    </section>
+
+    <!-- EXECUTIVE SUMMARY: readable on its own before the detail. -->
+    <section class="exec-summary" id="executive-summary">
+      <h2>Executive summary</h2>
+      
+<div class="stats">
+  <div class="stat"><div class="figure">.51 vs .38</div><div class="label">Predictive validity of structured vs unstructured interviews<span class="cite"><a href="#ref-1">1</a><span class="src"><span class="src-quote">The average validity of structured interviews is .51, versus .38 for unstructured interviews.</span><span class="src-origin">Schmidt &amp; Hunter, Psychological Bulletin</span></span></span></div></div>
+  <div class="stat"><div class="figure">86%</div><div class="label">Hiring confidence Google reports at four interviews<span class="cite"><a href="#ref-2">2</a><span class="src"><span class="src-quote">four interviews were sufficient to predict with 86% confidence whether or not the company should hire someone.</span><span class="src-origin">Knowledge@Wharton</span></span></span></div></div>
+  <div class="stat"><div class="figure">+32 / +56pp</div><div class="label">Five-year revenue and shareholder-return edge of top-quartile design firms<span class="cite"><a href="#ref-3">3</a><span class="src"><span class="src-quote">32 percentage points higher revenue growth and 56 percentage points higher TRS growth for the period as a whole.</span><span class="src-origin">McKinsey &amp; Company</span></span></span></div></div>
+  <div class="stat"><div class="figure">20 vs 14</div><div class="label">Interviews per hire in 2024 vs 2021<span class="cite"><a href="#ref-4">4</a><span class="src"><span class="src-quote">42% more interviews per hire than in 2021 (20 vs. 14), contributing to a 24% increase in average time to hire (41 vs. 33 days).</span><span class="src-origin">Gem</span></span></span></div></div>
+  <div class="stat"><div class="figure">~40%</div><div class="label">Automattic paid-tryout candidates who are hired<span class="cite"><a href="#ref-5">5</a><span class="src"><span class="src-quote">at a rate of $25 per hour ... we end up hiring about 40 percent of the people who tryout with us.</span><span class="src-origin">EmployTest</span></span></span></div></div>
+  <div class="stat"><div class="figure">&lt;6 wks</div><div class="label">USDS SME-QA documented target, posting to certificate<span class="cite"><a href="#ref-6">6</a><span class="src"><span class="src-quote">Having a dedicated project manager and HR specialist will help you go from posting the announcement to issuing a certificate in under 6 weeks.</span><span class="src-origin">U.S. Digital Service</span></span></span></div></div>
+</div>
+<p>The sources cluster design hiring around two poles. One is structured, rubric-scored, committee-decided hiring,
+documented at Google<span class="cite"><a href="#ref-2">2</a><span class="src"><span class="src-quote">four interviews were sufficient to predict with 86% confidence whether or not the company should hire someone.</span><span class="src-origin">Knowledge@Wharton</span></span></span>, Amazon<span class="cite"><a href="#ref-7">7</a><span class="src"><span class="src-quote">they can veto a hiring decision, even if every other panel member disagrees ... only candidates meeting or exceeding the bar get through.</span><span class="src-origin">Design Gurus</span></span></span> and the UK Government Digital Service<span class="cite"><a href="#ref-8">8</a><span class="src"><span class="src-quote">a panel of 3 or 4 people is formed ... At most, there will be one non-designer on the panel ... gender-inclusive as well as minority race and ethnicity inclusive.</span><span class="src-origin">UK Government Digital Service</span></span></span> and underpinned by
+selection-science findings that structured interviews roughly double the predictive validity of unstructured ones
+and carry less bias<span class="cite"><a href="#ref-1">1</a><span class="src"><span class="src-quote">The average validity of structured interviews is .51, versus .38 for unstructured interviews.</span><span class="src-origin">Schmidt &amp; Hunter, Psychological Bulletin</span></span></span><span class="cite"><a href="#ref-9">9</a><span class="src"><span class="src-quote">structured interviews have more than double the predictive power of unstructured interviews ... nearly a third less bias.</span><span class="src-origin">Criteria Corp</span></span></span>. The other is taste-, craft- and relationship-led hiring, documented at IDEO<span class="cite"><a href="#ref-10">10</a><span class="src"><span class="src-quote">Any recruiter at IDEO will tell you the resume is the last thing you look at; the work is always the first.</span><span class="src-origin">Duane Bray (IDEO), Core77</span></span></span>,
+small studios such as Clearleft<span class="cite"><a href="#ref-11">11</a><span class="src"><span class="src-quote">a good third of the people that we&#x27;ve hired at Clearleft, we&#x27;ve hired because they were already working with us ... an agency got to try before we bought.</span><span class="src-origin">User Defenders podcast</span></span></span>, and in the paid-audition model at Automattic<span class="cite"><a href="#ref-12">12</a><span class="src"><span class="src-quote">being well-spoken or charming in an interview often had little bearing on how a candidate would perform the job in question. So they introduced tryouts ... three to eight weeks (with pay).</span><span class="src-origin">Matt Mullenweg, Harvard Business Review</span></span></span>. Most documented
+processes combine elements of both. The sections below set out the philosophies, the formats and their criticisms,
+the real loops at named organizations, and the real rubrics and leveling frameworks.</p>
+<div class="callout"><strong>One documented data point on rubric mechanics.</strong> In Greenhouse's analysis of
+roughly one million interviews, interviewers who saw another interviewer's scorecard before submitting their own
+were 3.6% more likely to give the exact same rating, which the company estimates contaminated about 36,000
+interviews; it reports 85% of its customers use a setting that prevents this "peeking."<span class="cite"><a href="#ref-13">13</a><span class="src"><span class="src-quote">interviewers who peeked were 3.6% more likely to give the exact same rating compared to interviewers who submitted their scorecards independently.</span><span class="src-origin">Greenhouse</span></span></span></div>
+
+    </section>
+
+    <!-- BODY SECTIONS go here. Citation pattern:
+         <span class="cite"><a href="#ref-1">1</a><span class="src">
+           <span class="src-quote">"verbatim supporting text from the source"</span>
+           <span class="src-origin">Source name, publisher</span>
+         </span></span>
+    -->
+    
+<h2 id="maturity">1. Interview frameworks by organizational maturity</h2>
+<p>Two maturity vocabularies recur in the literature. The Nielsen Norman Group uses six stages<span class="cite"><a href="#ref-14">14</a><span class="src"><span class="src-quote">There are six stages of UX maturity (Absent, Limited, Emergent, Structured, Integrated, and User-Driven).</span><span class="src-origin">Nielsen Norman Group</span></span></span>, and its
+self-assessment quiz of 5,371 professionals found about half at stage 3<span class="cite"><a href="#ref-15">15</a><span class="src"><span class="src-quote">Half of 5,371 UX professionals were in stage 3 (emergent maturity) ... and very few scored at the highest end.</span><span class="src-origin">Nielsen Norman Group</span></span></span>. InVision's <em>The New Design
+Frontier</em>, a survey of more than 2,200 organizations, uses five levels and reports the distribution below<span class="cite"><a href="#ref-16">16</a><span class="src"><span class="src-quote">they found that 41% of companies surveyed are stuck at Level 1 ... only 5% of the researched companies reach level 5.</span><span class="src-origin">Stephanie Kabi / InVision</span></span></span>.</p>
+<table>
+<thead><tr><th>InVision level</th><th>Name</th><th>Share</th><th>How the report characterizes design at this level</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Producers</td><td>41%<span class="cite"><a href="#ref-16">16</a><span class="src"><span class="src-quote">they found that 41% of companies surveyed are stuck at Level 1 ... only 5% of the researched companies reach level 5.</span><span class="src-origin">Stephanie Kabi / InVision</span></span></span></td><td>Surface and visual work, "what happens on the screen"</td></tr>
+<tr><td>2</td><td>Connectors</td><td>21%</td><td>A formal process with collaboration and basic research</td></tr>
+<tr><td>3</td><td>Architects</td><td>21%</td><td>A standardized, scalable process integrated into the product cycle</td></tr>
+<tr><td>4</td><td>Scientists</td><td>12%</td><td>A hypothesis and an experiment, data-driven</td></tr>
+<tr><td>5</td><td>Visionaries</td><td>5%<span class="cite"><a href="#ref-16">16</a><span class="src"><span class="src-quote">they found that 41% of companies surveyed are stuck at Level 1 ... only 5% of the researched companies reach level 5.</span><span class="src-origin">Stephanie Kabi / InVision</span></span></span></td><td>Business strategy</td></tr>
+</tbody>
+</table>
+<p>The interview process documented at each level tends to escalate with it: a single founder conversation and a
+portfolio walk-through at the least mature end, a multi-round committee-decided loop at the most mature, and a
+competency-anchored panel in the public sector. The specific loops appear in Sections 4 and 4.1.</p>
+
+<h2 id="philosophy">2. Hiring philosophies of major design orgs and leaders</h2>
+<h4>Structured, bias-reducing, separate the deciders</h4>
+<p><strong>Laszlo Bock / Google.</strong> Google's reported analysis found four interviews enough to predict a hire
+with 86% confidence, with each additional interviewer adding about 1%, and the resulting "Rule of Four" cut time to
+hire from roughly six months to about 45 days<span class="cite"><a href="#ref-2">2</a><span class="src"><span class="src-quote">four interviews were sufficient to predict with 86% confidence whether or not the company should hire someone.</span><span class="src-origin">Knowledge@Wharton</span></span></span>. Google separates interviewers from deciders through a
+hiring committee that did not meet the candidate, and scores against rubrics with anchors for outstanding, solid,
+borderline and poor answers<span class="cite"><a href="#ref-17">17</a><span class="src"><span class="src-quote">Scoring with standardized rubrics so that all reviewers have a shared understanding of what outstanding, solid, borderline, and poor response looks like.</span><span class="src-origin">Google re:Work</span></span></span>. The underlying evidence is Schmidt and Hunter's 1998 meta-analysis<span class="cite"><a href="#ref-1">1</a><span class="src"><span class="src-quote">The average validity of structured interviews is .51, versus .38 for unstructured interviews.</span><span class="src-origin">Schmidt &amp; Hunter, Psychological Bulletin</span></span></span>,
+reaffirmed by Sackett and colleagues in 2022<span class="cite"><a href="#ref-9">9</a><span class="src"><span class="src-quote">structured interviews have more than double the predictive power of unstructured interviews ... nearly a third less bias.</span><span class="src-origin">Criteria Corp</span></span></span>.</p>
+<p><strong>Daniel Kahneman, "decision hygiene."</strong> In <em>Noise</em>, the prescription is to decompose a
+judgment into dimensions, score each independently, and delay the holistic judgment to the end<span class="cite"><a href="#ref-18">18</a><span class="src"><span class="src-quote">The structured interview breaks up the problems into dimensions, gets separate judgments on each dimension, and delays global evaluation until the end of the process.</span><span class="src-origin">Issues in Science and Technology</span></span></span>,
+explicitly not a mechanical average<span class="cite"><a href="#ref-19">19</a><span class="src"><span class="src-quote">As long as you delay judgment to the end of the process, you can make an overall evaluation of each candidate that includes intangibles or intuition.</span><span class="src-origin">Inc., quoting Daniel Kahneman</span></span></span>, and Kahneman notes Google enforces that interviewers rate
+separately before they communicate<span class="cite"><a href="#ref-20">20</a><span class="src"><span class="src-quote">Google stringently enforces a rule ... the company makes sure that the interviewers rate the candidate separately, before they communicate with one another.</span><span class="src-origin">Kahneman, Sibony &amp; Sunstein</span></span></span>.</p>
+<p><strong>Amazon, the Bar Raiser.</strong> A specially trained interviewer from outside the hiring team, with 6 to
+12 months of training, whose standard is exceeding the top 50% of current employees in the role<span class="cite"><a href="#ref-21">21</a><span class="src"><span class="src-quote">Bar Raisers ... have undergone a rigorous 6 to 12-month training program ... exceed the top 50% of their existing employees.</span><span class="src-origin">Prepfully</span></span></span>, who
+can veto a hire even when everyone else agrees<span class="cite"><a href="#ref-7">7</a><span class="src"><span class="src-quote">they can veto a hiring decision, even if every other panel member disagrees ... only candidates meeting or exceeding the bar get through.</span><span class="src-origin">Design Gurus</span></span></span> and leads the debrief. A Bar Raiser who conducted 813
+interviews records that actually using the veto signals a leadership failure, so the role is mainly to push the
+panel to alignment<span class="cite"><a href="#ref-22">22</a><span class="src"><span class="src-quote">Over the course of my 11 years at Amazon I conducted 813 interviews ... you lead the debrief ... You have veto power over all hiring decisions.</span><span class="src-origin">Carlos Arguelles, Medium</span></span></span>.</p>
+<h4>Taste, craft and judgment-led</h4>
+<p><strong>Julie Zhuo (Facebook/Meta).</strong> Zhuo screens for "extreme proactivity," with great candidates who
+"take the initiative to experiment, design and build on their own,"<span class="cite"><a href="#ref-23">23</a><span class="src"><span class="src-quote">Great candidates take the initiative to experiment, design and build on their own.</span><span class="src-origin">Julie Zhuo, First Round Review</span></span></span> and for earlier-career designers
+prizes "self-awareness and proactivity."<span class="cite"><a href="#ref-24">24</a><span class="src"><span class="src-quote">the most important traits are self-awareness and proactivity.</span><span class="src-origin">Intercom</span></span></span></p>
+<p><strong>Bob Baxley (Apple, Yahoo, Pinterest, ThoughtSpot).</strong> Baxley's documented framing treats the
+portfolio presentation as a de facto tryout and the candidate experience itself as a design project (an attributed
+practitioner account rather than a single published artifact).</p>
+<h4>Audition and relationship-led</h4>
+<p><strong>Matt Mullenweg / Automattic</strong> moved to paid auditions after concluding charm in an interview had
+little bearing on performance: real work over three to eight weeks<span class="cite"><a href="#ref-12">12</a><span class="src"><span class="src-quote">being well-spoken or charming in an interview often had little bearing on how a candidate would perform the job in question. So they introduced tryouts ... three to eight weeks (with pay).</span><span class="src-origin">Matt Mullenweg, Harvard Business Review</span></span></span>, hiring about 40% of those who try
+out<span class="cite"><a href="#ref-5">5</a><span class="src"><span class="src-quote">at a rate of $25 per hour ... we end up hiring about 40 percent of the people who tryout with us.</span><span class="src-origin">EmployTest</span></span></span>. <strong>IDEO (Duane Bray):</strong> "the resume is the last thing you look at; the work is always
+the first."<span class="cite"><a href="#ref-10">10</a><span class="src"><span class="src-quote">Any recruiter at IDEO will tell you the resume is the last thing you look at; the work is always the first.</span><span class="src-origin">Duane Bray (IDEO), Core77</span></span></span> <strong>Andy Budd (Clearleft):</strong> a third of hires were already freelancing with the
+studio, so "an agency got to try before we bought."<span class="cite"><a href="#ref-11">11</a><span class="src"><span class="src-quote">a good third of the people that we&#x27;ve hired at Clearleft, we&#x27;ve hired because they were already working with us ... an agency got to try before we bought.</span><span class="src-origin">User Defenders podcast</span></span></span></p>
+<h4>The dissenters on design tests</h4>
+<p><strong>Peter Merholz:</strong> design tests "set up an unhealthy power dynamic," the context is "wholly
+artificial," and reveal less than probing the portfolio<span class="cite"><a href="#ref-25">25</a><span class="src"><span class="src-quote">Design tests set up an unhealthy power dynamic in the interview environment ... wholly artificial ... There is nothing you will find out in such a test that you couldn&#x27;t better learn through probing the candidate about their portfolio.</span><span class="src-origin">Peter Merholz, Org Design for Design Orgs</span></span></span> (a position often misattributed to Erika Hall).
+<strong>Jared Spool</strong> calls a design exercise meant to test how a candidate handles pressure unethical<span class="cite"><a href="#ref-26">26</a><span class="src"><span class="src-quote">Asking a candidate to perform a design exercise so you can see how they handle the pressure is unethical. #DanceMonkeyDance</span><span class="src-origin">Jared Spool (quoted), via Khoi Vinh</span></span></span>.</p>
+
+<h2 id="formats">3. Interview formats: documented uses, pros, cons, and criticisms</h2>
+<table>
+<thead><tr><th>Format</th><th>Documented users</th><th>What it is reported to assess</th><th>Documented criticism</th></tr></thead>
+<tbody>
+<tr><td>Portfolio presentation</td><td>Meta, Google, Airbnb, Spotify, GDS<span class="cite"><a href="#ref-8">8</a><span class="src"><span class="src-quote">a panel of 3 or 4 people is formed ... At most, there will be one non-designer on the panel ... gender-inclusive as well as minority race and ethnicity inclusive.</span><span class="src-origin">UK Government Digital Service</span></span></span></td><td>Real work, process, storytelling, communication</td><td>Advantages shareable, non-NDA work and pedigree; reviewers skim</td></tr>
+<tr><td>Whiteboard / live challenge</td><td>Google, Meta<span class="cite"><a href="#ref-27">27</a><span class="src"><span class="src-quote">a panel of 2 Sr. designers and 1 manager ... split into 4 parts: portfolio presentation, app critique, background, and design challenge.</span><span class="src-origin">Glassdoor (self-reported)</span></span></span>, Spotify<span class="cite"><a href="#ref-28">28</a><span class="src"><span class="src-quote">Spotify runs a full-day onsite with portfolio review, a live whiteboard exercise, cross-functional 1:1s and a fika, with no take-home design challenge.</span><span class="src-origin">The Product Design Interview, Medium</span></span></span>, Airbnb</td><td>Thinking, collaboration, response to feedback, in real time</td><td>Artificial pressure favors fast, extroverted performers</td></tr>
+<tr><td>App / product critique</td><td>Meta<span class="cite"><a href="#ref-29">29</a><span class="src"><span class="src-quote">You&#x27;d be asked questions like Tell me about your favorite app and how you&#x27;d improve it.</span><span class="src-origin">Prepfully</span></span></span></td><td>Critical eye; what a candidate treats as important and in what order</td><td>Can reward glib opinion without a framework</td></tr>
+<tr><td>Take-home exercise</td><td>Square<span class="cite"><a href="#ref-30">30</a><span class="src"><span class="src-quote">At Square we do a take-home exercise where we basically tell you to design a specific fictional product from scratch, and grade it heavily on product thinking, interaction design, and visual execution.</span><span class="src-origin">Blind (self-reported)</span></span></span>, many startups; Airbnb historically</td><td>Self-directed problem-solving on a brief</td><td>"Free work," time-inequity, senior drop-off<span class="cite"><a href="#ref-25">25</a><span class="src"><span class="src-quote">Design tests set up an unhealthy power dynamic in the interview environment ... wholly artificial ... There is nothing you will find out in such a test that you couldn&#x27;t better learn through probing the candidate about their portfolio.</span><span class="src-origin">Peter Merholz, Org Design for Design Orgs</span></span></span><span class="cite"><a href="#ref-31">31</a><span class="src"><span class="src-quote">producing novel, valuable and marketable ideas for free.</span><span class="src-origin">Meaghan, Bootcamp (Medium)</span></span></span></td></tr>
+<tr><td>Behavioral / values</td><td>Google (Googleyness)<span class="cite"><a href="#ref-17">17</a><span class="src"><span class="src-quote">Scoring with standardized rubrics so that all reviewers have a shared understanding of what outstanding, solid, borderline, and poor response looks like.</span><span class="src-origin">Google re:Work</span></span></span>, Amazon (LPs)<span class="cite"><a href="#ref-7">7</a><span class="src"><span class="src-quote">they can veto a hiring decision, even if every other panel member disagrees ... only candidates meeting or exceeding the bar get through.</span><span class="src-origin">Design Gurus</span></span></span>, Shopify (Life Story)<span class="cite"><a href="#ref-32">32</a><span class="src"><span class="src-quote">Shopify evaluates five core traits during this round: impact, readiness, trust, engagement, and self-awareness.</span><span class="src-origin">The Interview Guys</span></span></span></td><td>Collaboration, values, decisions over time</td><td>"Culture fit" can mask homogeneity</td></tr>
+<tr><td>Paid tryout / audition</td><td>Automattic<span class="cite"><a href="#ref-12">12</a><span class="src"><span class="src-quote">being well-spoken or charming in an interview often had little bearing on how a candidate would perform the job in question. So they introduced tryouts ... three to eight weeks (with pay).</span><span class="src-origin">Matt Mullenweg, Harvard Business Review</span></span></span>, Clearleft<span class="cite"><a href="#ref-11">11</a><span class="src"><span class="src-quote">a good third of the people that we&#x27;ve hired at Clearleft, we&#x27;ve hired because they were already working with us ... an agency got to try before we bought.</span><span class="src-origin">User Defenders podcast</span></span></span></td><td>Real work as the assessment</td><td>Excludes the currently employed; time-intensive</td></tr>
+<tr><td>Committee / Bar Raiser</td><td>Google<span class="cite"><a href="#ref-2">2</a><span class="src"><span class="src-quote">four interviews were sufficient to predict with 86% confidence whether or not the company should hire someone.</span><span class="src-origin">Knowledge@Wharton</span></span></span>, Amazon<span class="cite"><a href="#ref-7">7</a><span class="src"><span class="src-quote">they can veto a hiring decision, even if every other panel member disagrees ... only candidates meeting or exceeding the bar get through.</span><span class="src-origin">Design Gurus</span></span></span>, GDS<span class="cite"><a href="#ref-8">8</a><span class="src"><span class="src-quote">a panel of 3 or 4 people is formed ... At most, there will be one non-designer on the panel ... gender-inclusive as well as minority race and ethnicity inclusive.</span><span class="src-origin">UK Government Digital Service</span></span></span></td><td>Decision separated from interviewers</td><td>Slows time to hire</td></tr>
+</tbody>
+</table>
+<h4>Documented example prompts</h4>
+<table>
+<thead><tr><th>Organization</th><th>Reported prompt</th></tr></thead>
+<tbody>
+<tr><td>Meta (app critique)</td><td>"Tell me about your favorite app and how you'd improve it"<span class="cite"><a href="#ref-29">29</a><span class="src"><span class="src-quote">You&#x27;d be asked questions like Tell me about your favorite app and how you&#x27;d improve it.</span><span class="src-origin">Prepfully</span></span></span> (candidates report critiquing Spotify, Instagram)</td></tr>
+<tr><td>Square (take-home)</td><td>Design a specific fictional product from scratch, graded heavily on product thinking, interaction design and visual execution<span class="cite"><a href="#ref-30">30</a><span class="src"><span class="src-quote">At Square we do a take-home exercise where we basically tell you to design a specific fictional product from scratch, and grade it heavily on product thinking, interaction design, and visual execution.</span><span class="src-origin">Blind (self-reported)</span></span></span></td></tr>
+<tr><td>Shopify (design)</td><td>"Design a returns solution for Shopify, considering that most users look for return policies"<span class="cite"><a href="#ref-33">33</a><span class="src"><span class="src-quote">Design a returns solution for Shopify, considering that most users look for return policies.</span><span class="src-origin">Exponent</span></span></span></td></tr>
+</tbody>
+</table>
+<p>On take-homes, one candidate who spent about 20 hours concluded they favored a whiteboard challenge instead<span class="cite"><a href="#ref-34">34</a><span class="src"><span class="src-quote">I favor a whiteboard challenge over a take-home assignment ... one cannot overlook the value of back-and-forth communication.</span><span class="src-origin">Andrew Cox, Bootcamp (Medium)</span></span></span>;
+a documented guardrail from one guide is that "the deliverable shouldn't be a fully coded concept that can be
+implemented."<span class="cite"><a href="#ref-35">35</a><span class="src"><span class="src-quote">the deliverable shouldn&#x27;t be a fully coded concept that can be implemented.</span><span class="src-origin">Holloway</span></span></span></p>
+
+<h2 id="bigorgs">4. Real end-to-end interview processes at named organizations</h2>
+<p>Each process below is laid out stage by stage. Loop and timing details outside the cited primary sources are
+self-reported (Glassdoor, Exponent, IGotAnOffer, Prepfully) and are noted as such.</p>
+
+<h3 id="meta">4.1 Meta / Facebook, Product Designer</h3>
+<p>Pipeline: recruiter screen &rarr; screening (past-work portfolio + app critique) &rarr; virtual onsite
+(portfolio + app critique + design challenge + behavioral) &rarr; offer; about 4 to 8 weeks<span class="cite"><a href="#ref-36">36</a><span class="src"><span class="src-quote">Meta recognizes multiple archetypes of product designers ... Craftsmen ... PMPs ... The end-to-end Meta interview process takes 4-8 weeks.</span><span class="src-origin">Exponent</span></span></span>.</p>
+<table>
+<thead><tr><th>Stage</th><th>Format</th><th>Who is present</th><th>Length</th><th>Assesses</th></tr></thead>
+<tbody>
+<tr><td>1. Recruiter screen</td><td>Phone</td><td>Recruiter</td><td>~30 min</td><td>Background, motivation, logistics</td></tr>
+<tr><td>2a. Screening</td><td>"Past work" portfolio review</td><td>Hiring manager</td><td>45 min</td><td>Past projects and process<span class="cite"><a href="#ref-37">37</a><span class="src"><span class="src-quote">you&#x27;ll have four main types of interviews at Meta: past work, app critique, problem-solving, and behavioral.</span><span class="src-origin">IGotAnOffer</span></span></span></td></tr>
+<tr><td>2b. Screening</td><td>App critique</td><td>Current product designer</td><td>45 min</td><td>Design thinking, critical eye<span class="cite"><a href="#ref-29">29</a><span class="src"><span class="src-quote">You&#x27;d be asked questions like Tell me about your favorite app and how you&#x27;d improve it.</span><span class="src-origin">Prepfully</span></span></span></td></tr>
+<tr><td>3. Onsite</td><td>Portfolio presentation, app critique, background, design challenge</td><td>Panel: 2 senior designers + 1 manager</td><td>back-to-back</td><td>Craft, product judgment, problem-solving, collaboration<span class="cite"><a href="#ref-27">27</a><span class="src"><span class="src-quote">a panel of 2 Sr. designers and 1 manager ... split into 4 parts: portfolio presentation, app critique, background, and design challenge.</span><span class="src-origin">Glassdoor (self-reported)</span></span></span></td></tr>
+<tr><td>4. Decision</td><td>Debrief</td><td>Hiring manager + panel</td><td>&mdash;</td><td>Four types overall: past work, app critique, problem-solving, behavioral<span class="cite"><a href="#ref-37">37</a><span class="src"><span class="src-quote">you&#x27;ll have four main types of interviews at Meta: past work, app critique, problem-solving, and behavioral.</span><span class="src-origin">IGotAnOffer</span></span></span></td></tr>
+</tbody>
+</table>
+<p>Meta documents two designer archetypes it hires against:</p>
+<table>
+<thead><tr><th>Archetype</th><th>Reported emphasis</th></tr></thead>
+<tbody>
+<tr><td>Craftsmen</td><td>Visual and interaction detail, refined sense of craft<span class="cite"><a href="#ref-36">36</a><span class="src"><span class="src-quote">Meta recognizes multiple archetypes of product designers ... Craftsmen ... PMPs ... The end-to-end Meta interview process takes 4-8 weeks.</span><span class="src-origin">Exponent</span></span></span></td></tr>
+<tr><td>PMPs (product-minded)</td><td>Strong design plus product thinking and cross-functional influence<span class="cite"><a href="#ref-36">36</a><span class="src"><span class="src-quote">Meta recognizes multiple archetypes of product designers ... Craftsmen ... PMPs ... The end-to-end Meta interview process takes 4-8 weeks.</span><span class="src-origin">Exponent</span></span></span></td></tr>
+</tbody>
+</table>
+
+<h3 id="google">4.2 Google / Alphabet, UX / Interaction Designer</h3>
+<p>Pipeline: recruiter screen &rarr; portfolio review &rarr; onsite (4 to 5 rounds) &rarr; hiring committee &rarr;
+team match &rarr; offer. The loop is capped near four substantive interviews by the Rule of Four<span class="cite"><a href="#ref-2">2</a><span class="src"><span class="src-quote">four interviews were sufficient to predict with 86% confidence whether or not the company should hire someone.</span><span class="src-origin">Knowledge@Wharton</span></span></span>.</p>
+<table>
+<thead><tr><th>Stage</th><th>Format</th><th>Who is present</th><th>Length</th><th>Assesses</th></tr></thead>
+<tbody>
+<tr><td>1. Recruiter screen</td><td>Phone</td><td>Recruiter</td><td>30 to 45 min</td><td>Background, target level</td></tr>
+<tr><td>2. Portfolio review</td><td>Review / call</td><td>Hiring manager</td><td>45 min</td><td>Past work</td></tr>
+<tr><td>3. Onsite (x4 to 5)</td><td>Portfolio presentation; Googleyness behavioral; technical/craft; whiteboard challenge</td><td>Cross-functional panel (3+)</td><td>45 min each</td><td>Craft, collaboration, problem-solving, values; scored Strong No Hire to Strong Hire<span class="cite"><a href="#ref-17">17</a><span class="src"><span class="src-quote">Scoring with standardized rubrics so that all reviewers have a shared understanding of what outstanding, solid, borderline, and poor response looks like.</span><span class="src-origin">Google re:Work</span></span></span></td></tr>
+<tr><td>4. Hiring committee</td><td>Packet review</td><td>Senior Googlers who did not interview</td><td>&mdash;</td><td>Role-related knowledge (RRK), general cognitive ability (GCA), leadership, Googleyness<span class="cite"><a href="#ref-38">38</a><span class="src"><span class="src-quote">Role-related knowledge and experience (known internally as RRK) ... General cognitive ability (GCA).</span><span class="src-origin">TeamRora</span></span></span></td></tr>
+<tr><td>5. Team match</td><td>Conversations</td><td>Prospective teams</td><td>&mdash;</td><td>Fit to an open role</td></tr>
+</tbody>
+</table>
+
+<h3 id="airbnb">4.3 Airbnb, Product Designer</h3>
+<p>Pipeline: hiring-manager story screen &rarr; portfolio presentation &rarr; design exercise &rarr;
+cross-functional collaboration rounds &rarr; Core Values round; no take-home in the canonical account<span class="cite"><a href="#ref-39">39</a><span class="src"><span class="src-quote">Airbnb&#x27;s product design loop centers on a story-driven portfolio review and cross-functional rounds, with no take-home challenge.</span><span class="src-origin">Nishtha H. Dalal, Medium</span></span></span>.</p>
+<table>
+<thead><tr><th>Stage</th><th>Format</th><th>Who is present</th><th>Length</th><th>Assesses</th></tr></thead>
+<tbody>
+<tr><td>1. Screen</td><td>Story-based phone</td><td>Hiring manager</td><td>~45 min</td><td>Narrative, motivation</td></tr>
+<tr><td>2. Portfolio presentation</td><td>Present to a group</td><td>6 to 8 designers</td><td>1 hr</td><td>Craft, communication, storytelling<span class="cite"><a href="#ref-39">39</a><span class="src"><span class="src-quote">Airbnb&#x27;s product design loop centers on a story-driven portfolio review and cross-functional rounds, with no take-home challenge.</span><span class="src-origin">Nishtha H. Dalal, Medium</span></span></span></td></tr>
+<tr><td>3. Design exercise</td><td>Live</td><td>Designer(s)</td><td>60 to 90 min</td><td>Problem-solving</td></tr>
+<tr><td>4. Communication &amp; Collaboration</td><td>1:1 rounds</td><td>Design manager, PM, engineering manager</td><td>~30 min each</td><td>Cross-functional collaboration</td></tr>
+<tr><td>5. Core Values</td><td>Structured</td><td>Trained interviewers outside the team</td><td>&mdash;</td><td>Values, weighted alongside technical rounds</td></tr>
+</tbody>
+</table>
+<p>Practice has varied: some older candidate reports describe a multi-day take-home, so the no-take-home detail is
+practitioner-reported and time-dependent<span class="cite"><a href="#ref-39">39</a><span class="src"><span class="src-quote">Airbnb&#x27;s product design loop centers on a story-driven portfolio review and cross-functional rounds, with no take-home challenge.</span><span class="src-origin">Nishtha H. Dalal, Medium</span></span></span>.</p>
+
+<h3 id="spotify">4.4 Spotify, Product Designer</h3>
+<p>Pipeline: recruiter screen &rarr; portfolio phone screen &rarr; full-day onsite; no take-home<span class="cite"><a href="#ref-28">28</a><span class="src"><span class="src-quote">Spotify runs a full-day onsite with portfolio review, a live whiteboard exercise, cross-functional 1:1s and a fika, with no take-home design challenge.</span><span class="src-origin">The Product Design Interview, Medium</span></span></span>.</p>
+<table>
+<thead><tr><th>Stage</th><th>Format</th><th>Who is present</th><th>Length</th><th>Assesses</th></tr></thead>
+<tbody>
+<tr><td>1. Recruiter screen</td><td>Phone</td><td>Recruiter</td><td>~30 min</td><td>Background, logistics</td></tr>
+<tr><td>2. Portfolio phone screen</td><td>Call</td><td>Senior designer / hiring manager</td><td>~30 min</td><td>Past work</td></tr>
+<tr><td>3. Onsite (full day)</td><td>Portfolio review; live whiteboard plus a second portfolio review; three 1:1s; a "fika" coffee chat</td><td>Two senior designers, then design/engineering/data/PM/UX research</td><td>~9:00 to 17:30</td><td>Craft, problem-solving, cross-functional collaboration<span class="cite"><a href="#ref-28">28</a><span class="src"><span class="src-quote">Spotify runs a full-day onsite with portfolio review, a live whiteboard exercise, cross-functional 1:1s and a fika, with no take-home design challenge.</span><span class="src-origin">The Product Design Interview, Medium</span></span></span></td></tr>
+</tbody>
+</table>
+
+<h3 id="shopify">4.5 Shopify</h3>
+<p>Pipeline: recruiter call &rarr; Life Story &rarr; portfolio / technical problem-solving &rarr; cross-functional
+rounds; reported 3 to 5 weeks<span class="cite"><a href="#ref-40">40</a><span class="src"><span class="src-quote">Every candidate, from intern to executive, goes through the Life Story interview.</span><span class="src-origin">OphyAI</span></span></span>.</p>
+<table>
+<thead><tr><th>Stage</th><th>Format</th><th>Who is present</th><th>Length</th><th>Assesses</th></tr></thead>
+<tbody>
+<tr><td>1. Recruiter call</td><td>Phone</td><td>Recruiter</td><td>~30 min</td><td>Background, alignment</td></tr>
+<tr><td>2. Life Story</td><td>Open conversation (every candidate, intern to executive)<span class="cite"><a href="#ref-40">40</a><span class="src"><span class="src-quote">Every candidate, from intern to executive, goes through the Life Story interview.</span><span class="src-origin">OphyAI</span></span></span></td><td>Recruiter or hiring lead</td><td>45 to 60 min</td><td>Impact, readiness, trust, engagement, self-awareness<span class="cite"><a href="#ref-32">32</a><span class="src"><span class="src-quote">Shopify evaluates five core traits during this round: impact, readiness, trust, engagement, and self-awareness.</span><span class="src-origin">The Interview Guys</span></span></span></td></tr>
+<tr><td>3. Craft / problem-solving</td><td>Portfolio deep-dive plus design prompts</td><td>Current designers</td><td>&mdash;</td><td>e.g. "Design a returns solution for Shopify"<span class="cite"><a href="#ref-33">33</a><span class="src"><span class="src-quote">Design a returns solution for Shopify, considering that most users look for return policies.</span><span class="src-origin">Exponent</span></span></span></td></tr>
+<tr><td>4. Cross-functional</td><td>Rounds</td><td>Design, product, engineering</td><td>&mdash;</td><td>Collaboration, values</td></tr>
+</tbody>
+</table>
+
+<h3 id="amazon">4.6 Amazon</h3>
+<p>Pipeline: resume screen &rarr; phone screen &rarr; onsite loop including a Bar Raiser &rarr; debrief led by the
+Bar Raiser; rejections typically 10 to 14 days after the onsite<span class="cite"><a href="#ref-41">41</a><span class="src"><span class="src-quote">Amazon sends templated rejection emails, typically 10-14 days after your final interview.</span><span class="src-origin">Leon Consulting</span></span></span>.</p>
+<table>
+<thead><tr><th>Stage</th><th>Format</th><th>Who is present</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td>1. Resume screen</td><td>Review</td><td>Recruiter</td><td>Recruiting manager differs from hiring manager</td></tr>
+<tr><td>2. Phone screen</td><td>Phone</td><td>Recruiter / hiring manager</td><td>&mdash;</td></tr>
+<tr><td>3. Onsite loop</td><td>Back-to-back behavioral and craft rounds tied to the 16 Leadership Principles</td><td>Hiring manager, peers, and a Bar Raiser from outside the team</td><td>Bar Raiser has veto power<span class="cite"><a href="#ref-7">7</a><span class="src"><span class="src-quote">they can veto a hiring decision, even if every other panel member disagrees ... only candidates meeting or exceeding the bar get through.</span><span class="src-origin">Design Gurus</span></span></span></td></tr>
+<tr><td>4. Debrief</td><td>Panel discussion</td><td>Led by the Bar Raiser</td><td>Standard: exceed the top 50% in role; 6 to 12 months of Bar Raiser training<span class="cite"><a href="#ref-21">21</a><span class="src"><span class="src-quote">Bar Raisers ... have undergone a rigorous 6 to 12-month training program ... exceed the top 50% of their existing employees.</span><span class="src-origin">Prepfully</span></span></span></td></tr>
+</tbody>
+</table>
+
+<h3 id="compare">4.7 Side-by-side comparison</h3>
+<table>
+<thead><tr><th>Company</th><th>Rounds (post-screen)</th><th>Take-home?</th><th>Signature round</th><th>Who decides</th><th>Reported cycle</th></tr></thead>
+<tbody>
+<tr><td>Meta</td><td>~4 onsite</td><td>No, live problem-solving<span class="cite"><a href="#ref-37">37</a><span class="src"><span class="src-quote">you&#x27;ll have four main types of interviews at Meta: past work, app critique, problem-solving, and behavioral.</span><span class="src-origin">IGotAnOffer</span></span></span></td><td>App critique<span class="cite"><a href="#ref-29">29</a><span class="src"><span class="src-quote">You&#x27;d be asked questions like Tell me about your favorite app and how you&#x27;d improve it.</span><span class="src-origin">Prepfully</span></span></span></td><td>Hiring manager + panel</td><td>4 to 8 wks<span class="cite"><a href="#ref-36">36</a><span class="src"><span class="src-quote">Meta recognizes multiple archetypes of product designers ... Craftsmen ... PMPs ... The end-to-end Meta interview process takes 4-8 weeks.</span><span class="src-origin">Exponent</span></span></span></td></tr>
+<tr><td>Google</td><td>4 to 5</td><td>Rarely</td><td>Whiteboard + Googleyness<span class="cite"><a href="#ref-17">17</a><span class="src"><span class="src-quote">Scoring with standardized rubrics so that all reviewers have a shared understanding of what outstanding, solid, borderline, and poor response looks like.</span><span class="src-origin">Google re:Work</span></span></span></td><td>Hiring committee + team match<span class="cite"><a href="#ref-2">2</a><span class="src"><span class="src-quote">four interviews were sufficient to predict with 86% confidence whether or not the company should hire someone.</span><span class="src-origin">Knowledge@Wharton</span></span></span></td><td>4 to 8 wks</td></tr>
+<tr><td>Airbnb</td><td>5</td><td>No, live exercise<span class="cite"><a href="#ref-39">39</a><span class="src"><span class="src-quote">Airbnb&#x27;s product design loop centers on a story-driven portfolio review and cross-functional rounds, with no take-home challenge.</span><span class="src-origin">Nishtha H. Dalal, Medium</span></span></span></td><td>Core Values</td><td>Hiring manager + committee</td><td>4 to 6 wks</td></tr>
+<tr><td>Spotify</td><td>Full-day onsite</td><td>No<span class="cite"><a href="#ref-28">28</a><span class="src"><span class="src-quote">Spotify runs a full-day onsite with portfolio review, a live whiteboard exercise, cross-functional 1:1s and a fika, with no take-home design challenge.</span><span class="src-origin">The Product Design Interview, Medium</span></span></span></td><td>Live whiteboard, fika</td><td>Team</td><td>~6 wks</td></tr>
+<tr><td>Shopify</td><td>3 to 4</td><td>Role-dependent</td><td>Life Story<span class="cite"><a href="#ref-40">40</a><span class="src"><span class="src-quote">Every candidate, from intern to executive, goes through the Life Story interview.</span><span class="src-origin">OphyAI</span></span></span></td><td>Team (multi-level)</td><td>3 to 5 wks<span class="cite"><a href="#ref-40">40</a><span class="src"><span class="src-quote">Every candidate, from intern to executive, goes through the Life Story interview.</span><span class="src-origin">OphyAI</span></span></span></td></tr>
+<tr><td>Amazon</td><td>5 to 6 loop</td><td>No</td><td>Bar Raiser (veto)<span class="cite"><a href="#ref-7">7</a><span class="src"><span class="src-quote">they can veto a hiring decision, even if every other panel member disagrees ... only candidates meeting or exceeding the bar get through.</span><span class="src-origin">Design Gurus</span></span></span></td><td>Bar Raiser + hiring manager<span class="cite"><a href="#ref-22">22</a><span class="src"><span class="src-quote">Over the course of my 11 years at Amazon I conducted 813 interviews ... you lead the debrief ... You have veto power over all hiring decisions.</span><span class="src-origin">Carlos Arguelles, Medium</span></span></span></td><td>1 wk to several mo</td></tr>
+<tr><td>GDS</td><td>1 panel (1.5 hr)</td><td>Scenario task</td><td>Structured panel<span class="cite"><a href="#ref-8">8</a><span class="src"><span class="src-quote">a panel of 3 or 4 people is formed ... At most, there will be one non-designer on the panel ... gender-inclusive as well as minority race and ethnicity inclusive.</span><span class="src-origin">UK Government Digital Service</span></span></span></td><td>Panel, independent then reconcile<span class="cite"><a href="#ref-8">8</a><span class="src"><span class="src-quote">a panel of 3 or 4 people is formed ... At most, there will be one non-designer on the panel ... gender-inclusive as well as minority race and ethnicity inclusive.</span><span class="src-origin">UK Government Digital Service</span></span></span></td><td>~26 days reported</td></tr>
+</tbody>
+</table>
+
+<h2 id="gov">5. Public-sector processes in detail</h2>
+<h3 id="gds">5.1 GDS (UK Government Digital Service)</h3>
+<p>Pipeline: apply with CV, cover letter and portfolio &rarr; sift &rarr; single remote panel interview &rarr;
+offer &rarr; security clearance (2 to 8 weeks) &rarr; written feedback to all. A panel of 3 or 4, with at most one
+non-designer, sifts individually then reconciles to a single score, inviting typically 5 to 7 candidates<span class="cite"><a href="#ref-8">8</a><span class="src"><span class="src-quote">a panel of 3 or 4 people is formed ... At most, there will be one non-designer on the panel ... gender-inclusive as well as minority race and ethnicity inclusive.</span><span class="src-origin">UK Government Digital Service</span></span></span>. The
+interview runs 1.5 hours on a fixed agenda:</p>
+<table>
+<thead><tr><th>Segment</th><th>Time</th></tr></thead>
+<tbody>
+<tr><td>Confirm identity</td><td>&mdash;</td></tr>
+<tr><td>Prepare for first question (a work scenario)</td><td>20 min<span class="cite"><a href="#ref-8">8</a><span class="src"><span class="src-quote">prepare for first question (20 minutes)</span><span class="src-origin">UK Government Digital Service</span></span></span></td></tr>
+<tr><td>Answer the work-scenario question</td><td>10 min<span class="cite"><a href="#ref-8">8</a><span class="src"><span class="src-quote">answer first question (10 minutes)</span><span class="src-origin">UK Government Digital Service</span></span></span></td></tr>
+<tr><td>Present 2 portfolio projects</td><td>15 min<span class="cite"><a href="#ref-8">8</a><span class="src"><span class="src-quote">present 2 project from the portfolio (15 minutes)</span><span class="src-origin">UK Government Digital Service</span></span></span></td></tr>
+<tr><td>Answer 5 behavioral questions</td><td>25 min<span class="cite"><a href="#ref-8">8</a><span class="src"><span class="src-quote">answer 5 behavioural questions (25 minutes)</span><span class="src-origin">UK Government Digital Service</span></span></span></td></tr>
+<tr><td>Candidate's own questions</td><td>10 min</td></tr>
+</tbody>
+</table>
+<p>Everyone is asked the same questions; panellists score individually, then combine and decide, and write feedback
+for every unsuccessful candidate<span class="cite"><a href="#ref-8">8</a><span class="src"><span class="src-quote">panel members individually score the candidates ... we write feedback for candidates who didn&#x27;t make it through this step.</span><span class="src-origin">UK Government Digital Service</span></span></span>.
+Offers start at the salary band minimum, with an allowance set by the candidate's assessed DDaT capability
+level<span class="cite"><a href="#ref-8">8</a><span class="src"><span class="src-quote">The salary that each candidate is offered will be the band minimum ... an additional non-pensionable allowance ... according to the allowance that matches their capability level.</span><span class="src-origin">UK Government Digital Service</span></span></span>.</p>
+
+<h3 id="usds">5.2 USDS SME-QA (United States)</h3>
+<p>Pipeline: a job-analysis workshop where subject-matter experts and HR define competencies &rarr; post the
+announcement about a week later &rarr; SMEs review resumes &rarr; two SME interviews (or a written assessment, used
+at CMS and EPA) &rarr; certify qualified applicants &rarr; hiring manager selects. SMEs assess candidates before
+qualification and veterans' preference are applied<span class="cite"><a href="#ref-42">42</a><span class="src"><span class="src-quote">SMEs participating in both SME-QA pilots found fewer applicants qualified (11% at DOI and 22% at HHS), but ultimately selected more applicants to be hired (13 at DOI and 7 at HHS).</span><span class="src-origin">U.S. Digital Service</span></span></span>. Reported pilot results:</p>
+<table>
+<thead><tr><th>Agency</th><th>Applicants</th><th>Qualified</th><th>% qualified</th><th>Selected</th><th>Time to selection</th></tr></thead>
+<tbody>
+<tr><td>HHS</td><td>165</td><td>36 (incl. 4 veterans)</td><td>22%<span class="cite"><a href="#ref-42">42</a><span class="src"><span class="src-quote">SMEs participating in both SME-QA pilots found fewer applicants qualified (11% at DOI and 22% at HHS), but ultimately selected more applicants to be hired (13 at DOI and 7 at HHS).</span><span class="src-origin">U.S. Digital Service</span></span></span></td><td>7<span class="cite"><a href="#ref-42">42</a><span class="src"><span class="src-quote">SMEs participating in both SME-QA pilots found fewer applicants qualified (11% at DOI and 22% at HHS), but ultimately selected more applicants to be hired (13 at DOI and 7 at HHS).</span><span class="src-origin">U.S. Digital Service</span></span></span></td><td>11 days<span class="cite"><a href="#ref-43">43</a><span class="src"><span class="src-quote">Historically the average time to selection between the two agencies was 47 days, but hiring managers at HHS took 11 days and DOI took 16 days to make their selections.</span><span class="src-origin">FedScoop</span></span></span></td></tr>
+<tr><td>DOI / National Park Service</td><td>224</td><td>25 (incl. 5 veterans)</td><td>11%<span class="cite"><a href="#ref-42">42</a><span class="src"><span class="src-quote">SMEs participating in both SME-QA pilots found fewer applicants qualified (11% at DOI and 22% at HHS), but ultimately selected more applicants to be hired (13 at DOI and 7 at HHS).</span><span class="src-origin">U.S. Digital Service</span></span></span></td><td>13<span class="cite"><a href="#ref-42">42</a><span class="src"><span class="src-quote">SMEs participating in both SME-QA pilots found fewer applicants qualified (11% at DOI and 22% at HHS), but ultimately selected more applicants to be hired (13 at DOI and 7 at HHS).</span><span class="src-origin">U.S. Digital Service</span></span></span></td><td>16 days<span class="cite"><a href="#ref-43">43</a><span class="src"><span class="src-quote">Historically the average time to selection between the two agencies was 47 days, but hiring managers at HHS took 11 days and DOI took 16 days to make their selections.</span><span class="src-origin">FedScoop</span></span></span></td></tr>
+<tr><td>DOI, prior baseline</td><td>&mdash;</td><td>95% rated qualified</td><td>95%<span class="cite"><a href="#ref-44">44</a><span class="src"><span class="src-quote">In the DOI pilot, SMEs found 11% of applicants qualified, and made 13 selections ... HR specialists found 95% of applicants to be qualified and hiring managers made no selections.</span><span class="src-origin">U.S. Digital Service</span></span></span></td><td>0 selected<span class="cite"><a href="#ref-44">44</a><span class="src"><span class="src-quote">In the DOI pilot, SMEs found 11% of applicants qualified, and made 13 selections ... HR specialists found 95% of applicants to be qualified and hiring managers made no selections.</span><span class="src-origin">U.S. Digital Service</span></span></span></td><td>47-day average<span class="cite"><a href="#ref-43">43</a><span class="src"><span class="src-quote">Historically the average time to selection between the two agencies was 47 days, but hiring managers at HHS took 11 days and DOI took 16 days to make their selections.</span><span class="src-origin">FedScoop</span></span></span></td></tr>
+</tbody>
+</table>
+<p>The documented target for the full process is a certificate "in under 6 weeks."<span class="cite"><a href="#ref-6">6</a><span class="src"><span class="src-quote">Having a dedicated project manager and HR specialist will help you go from posting the announcement to issuing a certificate in under 6 weeks.</span><span class="src-origin">U.S. Digital Service</span></span></span></p>
+
+<h2 id="studios">6. Small independent studios and agencies</h2>
+<table>
+<thead><tr><th>Studio</th><th>Documented practice</th></tr></thead>
+<tbody>
+<tr><td>Clearleft</td><td>A third of hires were already freelancing with the studio ("try before we bought")<span class="cite"><a href="#ref-11">11</a><span class="src"><span class="src-quote">a good third of the people that we&#x27;ve hired at Clearleft, we&#x27;ve hired because they were already working with us ... an agency got to try before we bought.</span><span class="src-origin">User Defenders podcast</span></span></span>; evolved toward a roughly two-hour paired whiteboard exercise; deliberately slow</td></tr>
+<tr><td>Automattic</td><td>Paid auditions, real work over 3 to 8 weeks<span class="cite"><a href="#ref-12">12</a><span class="src"><span class="src-quote">being well-spoken or charming in an interview often had little bearing on how a candidate would perform the job in question. So they introduced tryouts ... three to eight weeks (with pay).</span><span class="src-origin">Matt Mullenweg, Harvard Business Review</span></span></span>, about 40% of tryout candidates hired<span class="cite"><a href="#ref-5">5</a><span class="src"><span class="src-quote">at a rate of $25 per hour ... we end up hiring about 40 percent of the people who tryout with us.</span><span class="src-origin">EmployTest</span></span></span></td></tr>
+<tr><td>IDEO</td><td>Work first, activities over Q&amp;A, authentic story prized<span class="cite"><a href="#ref-10">10</a><span class="src"><span class="src-quote">Any recruiter at IDEO will tell you the resume is the last thing you look at; the work is always the first.</span><span class="src-origin">Duane Bray (IDEO), Core77</span></span></span></td></tr>
+<tr><td>ustwo</td><td>Cross-discipline interviews, about an hour, portfolio to small groups<span class="cite"><a href="#ref-45">45</a><span class="src"><span class="src-quote">ustwo interviews are typically around an hour, cross-discipline, with portfolio presentation to small groups.</span><span class="src-origin">Glassdoor (self-reported)</span></span></span></td></tr>
+<tr><td>Bakken &amp; Baeck</td><td>Generalist hiring; values learning and growth over years of experience<span class="cite"><a href="#ref-46">46</a><span class="src"><span class="src-quote">We&#x27;re more interested in what you want to learn and how you want to grow rather than the length of your experience.</span><span class="src-origin">Jobs.art / Bakken &amp; Baeck</span></span></span></td></tr>
+<tr><td>Work &amp; Co</td><td>A single design discipline blending UX and visual design, with frequent prototyping<span class="cite"><a href="#ref-47">47</a><span class="src"><span class="src-quote">a single design discipline combines both UX and visual design, with frequent prototyping and close collaboration with developers.</span><span class="src-origin">Work &amp; Co</span></span></span></td></tr>
+</tbody>
+</table>
+<p>A public list maintained on GitHub catalogues firms that reject artificial exercises in favor of paid trials and
+real-task discussion<span class="cite"><a href="#ref-48">48</a><span class="src"><span class="src-quote">Companies that don&#x27;t have a broken hiring process.</span><span class="src-origin">poteto, GitHub</span></span></span>.</p>
+
+<h2 id="rubrics">7. Real rubrics, scorecards, and leveling frameworks</h2>
+
+<h4>Google: a four-point category scale and six overall ratings</h4>
+<p>Each interview category is scored 1 to 4 against anchored descriptions. The published example for problem-solving
+defines the lowest point as poor: "the candidate's problem-solving skills were poor ... unable to solve the problem
+or did so without much thought ... highly unorganized, random, and ineffective."<span class="cite"><a href="#ref-49">49</a><span class="src"><span class="src-quote">1 Point: The candidate&#x27;s problem-solving skills were poor ... unable to solve the problem or did so without much thought ... highly unorganized, random, and ineffective.</span><span class="src-origin">Exponent</span></span></span> Interviewers then
+convert their category scores into one of six overall ratings; "4's across the board would be a Strong Hire ...
+Nothing but 1's ... Strong No Hire."<span class="cite"><a href="#ref-50">50</a><span class="src"><span class="src-quote">4&#x27;s across the board would be a Strong Hire. Nothing but 1&#x27;s, on the other hand, would be considered Strong No Hire.</span><span class="src-origin">Exponent</span></span></span></p>
+<table>
+<thead><tr><th>Category score</th><th>Anchor (problem-solving example)</th></tr></thead>
+<tbody>
+<tr><td>4</td><td>Well-thought-out, accurate solution with time left to discuss trade-offs; asks clarifying questions</td></tr>
+<tr><td>3</td><td>Working solution, but little time for sub-problems or trade-offs</td></tr>
+<tr><td>2</td><td>Adequate but unorganized or arbitrary; few or no clarifying questions</td></tr>
+<tr><td>1</td><td>Poor; unable to solve or solved without much thought; unorganized and ineffective<span class="cite"><a href="#ref-49">49</a><span class="src"><span class="src-quote">1 Point: The candidate&#x27;s problem-solving skills were poor ... unable to solve the problem or did so without much thought ... highly unorganized, random, and ineffective.</span><span class="src-origin">Exponent</span></span></span></td></tr>
+</tbody>
+</table>
+<table>
+<thead><tr><th colspan="6">Six overall ratings per interviewer<span class="cite"><a href="#ref-50">50</a><span class="src"><span class="src-quote">4&#x27;s across the board would be a Strong Hire. Nothing but 1&#x27;s, on the other hand, would be considered Strong No Hire.</span><span class="src-origin">Exponent</span></span></span></th></tr></thead>
+<tbody>
+<tr><td>Strong No Hire</td><td>No Hire</td><td>Lean No Hire</td><td>Lean Hire</td><td>Hire</td><td>Strong Hire</td></tr>
+</tbody>
+</table>
+<p>The hiring committee then assesses the packet against four dimensions: role-related knowledge and experience
+(RRK), general cognitive ability (GCA), leadership, and Googleyness<span class="cite"><a href="#ref-38">38</a><span class="src"><span class="src-quote">Role-related knowledge and experience (known internally as RRK) ... General cognitive ability (GCA).</span><span class="src-origin">TeamRora</span></span></span>.</p>
+
+<h4>Greenhouse: the de facto scorecard template</h4>
+<table>
+<thead><tr><th>Element</th><th>How it works</th></tr></thead>
+<tbody>
+<tr><td>Overall rating</td><td>Strong No, No, Mixed, Yes, Strong Yes; each interviewer rates independently before seeing others' feedback<span class="cite"><a href="#ref-51">51</a><span class="src"><span class="src-quote">Greenhouse scorecards use a rating scale: Strong No, No, Mixed, Yes, Strong Yes. Each interviewer rates independently before seeing other interviewers&#x27; feedback.</span><span class="src-origin">TalentTuner, on Greenhouse</span></span></span></td></tr>
+<tr><td>Per-attribute scale</td><td>Colors and emojis rather than numbers or words, chosen because "people tend to respond more consistently and powerfully to colors than they do to words"<span class="cite"><a href="#ref-52">52</a><span class="src"><span class="src-quote">People tend to respond more consistently and powerfully to colors than they do to words ... a combination of colors and emojis.</span><span class="src-origin">Greenhouse</span></span></span></td></tr>
+<tr><td>Anti-anchoring</td><td>Default prevents "scorecard peeking"; peeking made interviewers 3.6% more likely to give the identical rating<span class="cite"><a href="#ref-13">13</a><span class="src"><span class="src-quote">interviewers who peeked were 3.6% more likely to give the exact same rating compared to interviewers who submitted their scorecards independently.</span><span class="src-origin">Greenhouse</span></span></span></td></tr>
+</tbody>
+</table>
+
+<h4>GDS / DDaT: a four-level capability ladder</h4>
+<p>UK government design roles are scored against the Government Digital and Data (DDaT) Capability Framework, which
+defines four "ascending skill levels (awareness, working, practitioner, expert)."<span class="cite"><a href="#ref-53">53</a><span class="src"><span class="src-quote">the skills and ascending skill levels (awareness, working, practitioner, expert) in the Government Digital and Data Profession Capability Framework.</span><span class="src-origin">UK Government (DDaT)</span></span></span> Worked example for the
+Accessibility skill:</p>
+<table>
+<thead><tr><th>Level</th><th>Documented "you can" anchor (Accessibility skill)</th></tr></thead>
+<tbody>
+<tr><td>Awareness</td><td>Understand accessibility and that users have different needs; help fix issues under direction<span class="cite"><a href="#ref-53">53</a><span class="src"><span class="src-quote">the skills and ascending skill levels (awareness, working, practitioner, expert) in the Government Digital and Data Profession Capability Framework.</span><span class="src-origin">UK Government (DDaT)</span></span></span></td></tr>
+<tr><td>Working</td><td>Build user interfaces that meet accessibility standards; fix issues under direction</td></tr>
+<tr><td>Practitioner</td><td>Build to a predefined set of standards; champion accessibility to internal stakeholders; offer design feedback</td></tr>
+<tr><td>Expert</td><td>Advocate for users; champion to internal and external stakeholders; offer design solutions; recommend tools and methods</td></tr>
+</tbody>
+</table>
+
+<h4>Documented pros, cons, and criticisms of rubric-based scoring</h4>
+<table>
+<thead><tr><th>Documented benefit</th><th>Documented criticism</th></tr></thead>
+<tbody>
+<tr><td>Reduce noise and anchoring; independent scoring before debrief<span class="cite"><a href="#ref-13">13</a><span class="src"><span class="src-quote">interviewers who peeked were 3.6% more likely to give the exact same rating compared to interviewers who submitted their scorecards independently.</span><span class="src-origin">Greenhouse</span></span></span></td><td>False precision: a numeric score on a craft attribute implies rigor design judgment may lack</td></tr>
+<tr><td>Roughly double predictive validity vs unstructured interviews; less bias<span class="cite"><a href="#ref-1">1</a><span class="src"><span class="src-quote">The average validity of structured interviews is .51, versus .38 for unstructured interviews.</span><span class="src-origin">Schmidt &amp; Hunter, Psychological Bulletin</span></span></span><span class="cite"><a href="#ref-9">9</a><span class="src"><span class="src-quote">structured interviews have more than double the predictive power of unstructured interviews ... nearly a third less bias.</span><span class="src-origin">Criteria Corp</span></span></span></td><td>Gameable: an interview-prep industry exists to optimize against known rubrics</td></tr>
+<tr><td>Make leveling explicit (the DDaT ladder)<span class="cite"><a href="#ref-53">53</a><span class="src"><span class="src-quote">the skills and ascending skill levels (awareness, working, practitioner, expert) in the Government Digital and Data Profession Capability Framework.</span><span class="src-origin">UK Government (DDaT)</span></span></span></td><td>Flatten judgment: Merholz argues an artificial test reveals less than a portfolio conversation<span class="cite"><a href="#ref-25">25</a><span class="src"><span class="src-quote">Design tests set up an unhealthy power dynamic in the interview environment ... wholly artificial ... There is nothing you will find out in such a test that you couldn&#x27;t better learn through probing the candidate about their portfolio.</span><span class="src-origin">Peter Merholz, Org Design for Design Orgs</span></span></span></td></tr>
+<tr><td>Better, fairer reported candidate experience<span class="cite"><a href="#ref-17">17</a><span class="src"><span class="src-quote">Scoring with standardized rubrics so that all reviewers have a shared understanding of what outstanding, solid, borderline, and poor response looks like.</span><span class="src-origin">Google re:Work</span></span></span></td><td>Mechanical averaging is cautioned against; intuition should be delayed, not excluded<span class="cite"><a href="#ref-19">19</a><span class="src"><span class="src-quote">As long as you delay judgment to the end of the process, you can make an overall evaluation of each candidate that includes intangibles or intuition.</span><span class="src-origin">Inc., quoting Daniel Kahneman</span></span></span></td></tr>
+</tbody>
+</table>
+
+<h2 id="benchmarks">8. Benchmarks</h2>
+<p>Market-wide, interviews per hire rose 42% between 2021 and 2024 (14 to 20) and average time to hire rose 24% (33
+to 41 days)<span class="cite"><a href="#ref-4">4</a><span class="src"><span class="src-quote">42% more interviews per hire than in 2021 (20 vs. 14), contributing to a 24% increase in average time to hire (41 vs. 33 days).</span><span class="src-origin">Gem</span></span></span>. Google reports hiring confidence reaching about 86% at four interviews, with each additional
+interviewer adding under 1%<span class="cite"><a href="#ref-2">2</a><span class="src"><span class="src-quote">four interviews were sufficient to predict with 86% confidence whether or not the company should hire someone.</span><span class="src-origin">Knowledge@Wharton</span></span></span>. At the organization level, McKinsey reported top-quartile design performers
+outgrowing peers by 32 and 56 percentage points on revenue and shareholder return over five years<span class="cite"><a href="#ref-3">3</a><span class="src"><span class="src-quote">32 percentage points higher revenue growth and 56 percentage points higher TRS growth for the period as a whole.</span><span class="src-origin">McKinsey &amp; Company</span></span></span>, and
+IBM's designer-to-developer ratio moved from 1:72 to 1:8<span class="cite"><a href="#ref-54">54</a><span class="src"><span class="src-quote">A mature company like IBM ... went from 1:72 to 1:8 in five years.</span><span class="src-origin">UXPin, citing Fortune and TechCrunch</span></span></span>. Conversion data points include Automattic hiring
+about 40% of tryout candidates<span class="cite"><a href="#ref-5">5</a><span class="src"><span class="src-quote">at a rate of $25 per hour ... we end up hiring about 40 percent of the people who tryout with us.</span><span class="src-origin">EmployTest</span></span></span> and the USDS SME-QA pilots qualifying far fewer applicants while
+yielding more selections and faster decisions<span class="cite"><a href="#ref-42">42</a><span class="src"><span class="src-quote">SMEs participating in both SME-QA pilots found fewer applicants qualified (11% at DOI and 22% at HHS), but ultimately selected more applicants to be hired (13 at DOI and 7 at HHS).</span><span class="src-origin">U.S. Digital Service</span></span></span><span class="cite"><a href="#ref-43">43</a><span class="src"><span class="src-quote">Historically the average time to selection between the two agencies was 47 days, but hiring managers at HHS took 11 days and DOI took 16 days to make their selections.</span><span class="src-origin">FedScoop</span></span></span>. Company-specific cycle and round figures from
+Glassdoor, Exponent, IGotAnOffer and Prepfully are self-reported or vendor-estimated.</p>
+
+<h2 id="notes">9. Notes on sources and conflicting evidence</h2>
+<p>Primary and authoritative sources here include the GDS and USDS materials, the DDaT framework, Harvard Business
+Review (Mullenweg), First Round Review (Zhuo), Greenhouse's own research and documentation, <em>Noise</em>, the
+Schmidt and Hunter (1998) and Sackett et al. (2022) meta-analyses, Google re:Work, and named-practitioner writing
+(Merholz, Spool, Budd, Bray). Self-reported aggregators (Glassdoor, Exponent, IGotAnOffer, Prepfully, OphyAI,
+Blind) supply much of the company loop, prompt and timing detail and are directional only; loops change frequently
+and vary by team, level and year. Documented processes also conflict over time (Airbnb and small-studio take-home
+practices differ across accounts). Practitioners openly disagree on take-homes, mandatory portfolios and "culture
+fit." Maturity-model and business-value figures (InVision, NN/g, McKinsey, IBM) are partly self-reported or
+correlational, so they show association rather than proven causation.</p>
+
+
+    <!-- REFERENCES: numbered, must align with citation numbers. -->
+    <section class="references" id="references">
+      <h2>References</h2>
+      <ol>
+                <li id="ref-1"><a href="https://firstpersonnel.org/wp-content/uploads/2013/10/Summary-Schmidt-Hunter-1998.pdf">Validity and Utility of Selection Methods (1998)</a>, Schmidt &amp; Hunter, Psychological Bulletin.</li>
+        <li id="ref-2"><a href="https://knowledge.wharton.upenn.edu/article/open-sourcing-googles-hr-secrets/">Open Sourcing Google&#x27;s HR Secrets (on Work Rules!)</a>, Knowledge@Wharton.</li>
+        <li id="ref-3"><a href="https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/the-business-value-of-design">The Business Value of Design</a>, McKinsey &amp; Company.</li>
+        <li id="ref-4"><a href="https://www.gem.com/blog/10-takeaways-from-the-2025-recruiting-benchmarks-report">2025 Recruiting Benchmarks Report</a>, Gem.</li>
+        <li id="ref-5"><a href="https://www.employtest.com/hrblog/hiring-tips/automattic-founder-discusses-his-unorthodox-hiring-process/">Automattic&#x27;s unorthodox hiring process</a>, EmployTest.</li>
+        <li id="ref-6"><a href="https://smeqa.usds.gov/hiring-phases/getting-started/">SME-QA: Getting Started</a>, U.S. Digital Service.</li>
+        <li id="ref-7"><a href="https://www.designgurus.io/answers/detail/what-is-an-amazon-bar-raiser">What is an Amazon Bar Raiser?</a>, Design Gurus.</li>
+        <li id="ref-8"><a href="https://designnotes.blog.gov.uk/2022/03/02/how-gdss-design-recruitment-process-works/">How GDS&#x27;s design recruitment process works</a>, UK Government Digital Service.</li>
+        <li id="ref-9"><a href="https://www.criteriacorp.com/blog/updates-employee-selection-science">Latest Findings on Employee Selection (Sackett et al., 2022)</a>, Criteria Corp.</li>
+        <li id="ref-10"><a href="https://www.core77.com/posts/26239/getting-hired-to-work-at-ideo-skip-the-suit-tell-a-compelling-story-and-dont-be-creepy-26239">Getting Hired: To Work at IDEO</a>, Duane Bray (IDEO), Core77.</li>
+        <li id="ref-11"><a href="https://userdefenders.com/podcast/055-how-to-get-your-foot-in-the-door-with-andy-budd/">How to Get Your Foot in the Door (Andy Budd)</a>, User Defenders podcast.</li>
+        <li id="ref-12"><a href="https://hbr.org/2014/04/the-ceo-of-automattic-on-holding-auditions-to-build-a-strong-team">The CEO of Automattic on Holding Auditions</a>, Matt Mullenweg, Harvard Business Review.</li>
+        <li id="ref-13"><a href="https://www.greenhouse.com/guidance/how-scorecard-peeking-can-create-bias-in-hiring">How scorecard peeking can create bias</a>, Greenhouse.</li>
+        <li id="ref-14"><a href="https://www.nngroup.com/articles/ux-maturity-model/">The 6 Levels of UX Maturity</a>, Nielsen Norman Group.</li>
+        <li id="ref-15"><a href="https://www.nngroup.com/articles/state-ux-maturity-quiz/">The State of UX Maturity</a>, Nielsen Norman Group.</li>
+        <li id="ref-16"><a href="https://stephaniekabi.com/the-new-design-frontier-summary/">The New Design Frontier (summary)</a>, Stephanie Kabi / InVision.</li>
+        <li id="ref-17"><a href="https://rework.withgoogle.com/intl/en/guides/a-guide-to-structured-interviewing-for-better-hiring-practices">A guide to structured interviewing</a>, Google re:Work.</li>
+        <li id="ref-18"><a href="https://issues.org/daniel-kahneman-interview-noise-judgment-decisionmaking/">Interview with Daniel Kahneman</a>, Issues in Science and Technology.</li>
+        <li id="ref-19"><a href="https://www.inc.com/jessica-stillman/hiring-job-interviews-daniel-kahneman.html">Kahneman&#x27;s process for less awful interviews</a>, Inc., quoting Daniel Kahneman.</li>
+        <li id="ref-20"><a href="https://www.goodreads.com/notes/55938772-noise/7552515-erhan?page=12">Noise: A Flaw in Human Judgment</a>, Kahneman, Sibony &amp; Sunstein.</li>
+        <li id="ref-21"><a href="https://prepfully.com/interview-guides/amazons-bar-raiser-interview">Amazon Bar Raiser guide</a>, Prepfully.</li>
+        <li id="ref-22"><a href="https://medium.com/geekculture/memoirs-of-an-amazon-bar-raiser-718e36241310">Memoirs of an Amazon Bar Raiser</a>, Carlos Arguelles, Medium.</li>
+        <li id="ref-23"><a href="https://review.firstround.com/an-inside-look-at-facebooks-method-for-hiring-designers/">An Inside Look at Facebook&#x27;s Method for Hiring Designers</a>, Julie Zhuo, First Round Review.</li>
+        <li id="ref-24"><a href="https://www.intercom.com/blog/podcasts/podcast-julie-zhuo-on-product-design/">Julie Zhuo on product design</a>, Intercom.</li>
+        <li id="ref-25"><a href="https://orgdesignfordesignorgs.com/2018/05/15/design-exercises-are-a-bad-interviewing-practice/">Design Exercises are a Bad Interviewing Practice</a>, Peter Merholz, Org Design for Design Orgs.</li>
+        <li id="ref-26"><a href="https://www.goodreads.com/author_blog_posts/3097743-are-design-exercises-in-interviews-unethical">Are design exercises in interviews unethical?</a>, Jared Spool (quoted), via Khoi Vinh.</li>
+        <li id="ref-27"><a href="https://www.glassdoor.com/Interview/Meta-Product-Designer-Interview-Questions-EI_IE40772.0,4_KO5,21.htm">Meta Product Designer interview experience</a>, Glassdoor (self-reported).</li>
+        <li id="ref-28"><a href="https://medium.com/the-product-design-interview/spotify-product-design-interview-a598488c5f00">Spotify Product Design Interview</a>, The Product Design Interview, Medium.</li>
+        <li id="ref-29"><a href="https://prepfully.com/interview-guides/meta-product-designer">Meta Product Designer guide</a>, Prepfully.</li>
+        <li id="ref-30"><a href="https://www.teamblind.com/post/design-tests-uiux-product-design-kwqgmrkf">Design tests in product design interviews</a>, Blind (self-reported).</li>
+        <li id="ref-31"><a href="https://bootcamp.uxdesign.cc/the-death-of-take-home-design-exercises-7cef89c1f4f5">The death of take-home design exercises</a>, Meaghan, Bootcamp (Medium).</li>
+        <li id="ref-32"><a href="https://blog.theinterviewguys.com/shopify-interview-questions-and-answers/">Shopify Life Story round</a>, The Interview Guys.</li>
+        <li id="ref-33"><a href="https://www.tryexponent.com/blog/shopify-interview-process">Shopify interview process</a>, Exponent.</li>
+        <li id="ref-34"><a href="https://medium.com/design-bootcamp/my-entire-ux-take-home-assignment-e8dcd13a9a79">My entire UX take-home assignment</a>, Andrew Cox, Bootcamp (Medium).</li>
+        <li id="ref-35"><a href="https://www.holloway.com/g/land-your-dream-design-job/sections/the-take-home-design-exercise">The Take-Home Design Exercise</a>, Holloway.</li>
+        <li id="ref-36"><a href="https://www.tryexponent.com/guides/meta-product-designer-interview">Meta Product Designer Interview Guide</a>, Exponent.</li>
+        <li id="ref-37"><a href="https://igotanoffer.com/blogs/tech/facebook-product-designer-interview">Meta Product Designer Interview</a>, IGotAnOffer.</li>
+        <li id="ref-38"><a href="https://www.teamrora.com/post/recruiters-perspective-on-the-google-interview-process">Recruiter&#x27;s perspective on the Google interview process</a>, TeamRora.</li>
+        <li id="ref-39"><a href="https://nishthahd.medium.com/airbnb-product-design-interview-294cb22eb572">Airbnb Product Design Interview</a>, Nishtha H. Dalal, Medium.</li>
+        <li id="ref-40"><a href="https://ophyai.com/blog/company-guides/shopify-interview-guide">Shopify Interview Process 2026</a>, OphyAI.</li>
+        <li id="ref-41"><a href="https://leonstaff.com/blogs/amazon-interview-response-time/">Amazon interview response time</a>, Leon Consulting.</li>
+        <li id="ref-42"><a href="https://www.usds.gov/projects/smeqa">Changing how the government hires technical talent</a>, U.S. Digital Service.</li>
+        <li id="ref-43"><a href="https://fedscoop.com/usds-it-hiring-hhs-nps/">USDS wants to fix the black hole of USAJOBS</a>, FedScoop.</li>
+        <li id="ref-44"><a href="https://smeqa.usds.gov/assets/SMEQA-initial-pilots-case-study.pdf">SME-QA Hiring Pilot: Lessons Learned</a>, U.S. Digital Service.</li>
+        <li id="ref-45"><a href="https://www.glassdoor.com/Interview/ustwo-Interview-Questions-E718003.htm">ustwo interview experience</a>, Glassdoor (self-reported).</li>
+        <li id="ref-46"><a href="https://www.jobs.art/posts/designer-bakken-baeck">Designer at Bakken &amp; Baeck</a>, Jobs.art / Bakken &amp; Baeck.</li>
+        <li id="ref-47"><a href="https://work.co/careers/">Careers at Work &amp; Co</a>, Work &amp; Co.</li>
+        <li id="ref-48"><a href="https://github.com/poteto/hiring-without-whiteboards">hiring-without-whiteboards</a>, poteto, GitHub.</li>
+        <li id="ref-49"><a href="https://www.tryexponent.com/blog/google-coding-interview-rubric">Google interview rubric, an inside look</a>, Exponent.</li>
+        <li id="ref-50"><a href="https://www.tryexponent.com/blog/google-coding-interview-rubric">Google interview rubric, an inside look</a>, Exponent.</li>
+        <li id="ref-51"><a href="https://talenttuner.app/greenhouse-ats-checker">How Greenhouse ATS works: scorecard system</a>, TalentTuner, on Greenhouse.</li>
+        <li id="ref-52"><a href="https://support.greenhouse.io/hc/en-us/articles/360035935611-Scorecard-ratings-overview">Scorecard ratings overview</a>, Greenhouse.</li>
+        <li id="ref-53"><a href="https://ddat-capability-framework.service.gov.uk/skills.html">Government Digital and Data Profession Capability Framework</a>, UK Government (DDaT).</li>
+        <li id="ref-54"><a href="https://www.uxpin.com/studio/blog/designer-to-developer-ratio/">Designer-to-developer ratio (IBM)</a>, UXPin, citing Fortune and TechCrunch.</li>
+      </ol>
+    </section>
+  </main>
+</div>
+
+<script>
+  // Reading progress indicator
+  var bar = document.getElementById('progress');
+  function updateProgress() {
+    var h = document.documentElement;
+    var scrolled = h.scrollTop || document.body.scrollTop;
+    var height = h.scrollHeight - h.clientHeight;
+    bar.style.width = (height > 0 ? (scrolled / height) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+
+  // Active TOC highlight on scroll
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav.toc a'));
+  var targets = links.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function syncActive() {
+    var pos = (document.documentElement.scrollTop || document.body.scrollTop) + 120;
+    var current = targets[0];
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].offsetTop <= pos) current = targets[i];
+    }
+    links.forEach(function(a){
+      a.classList.toggle('active', current && a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', syncActive, { passive: true });
+  syncActive();
+
+  // Hamburger drawer toggle
+  var toggle = document.getElementById('toc-toggle');
+  var backdrop = document.getElementById('toc-backdrop');
+  var toc = document.querySelector('nav.toc');
+  function openToc() {
+    toc.classList.add('open');
+    backdrop.classList.add('open');
+    toggle.setAttribute('aria-expanded', 'true');
+  }
+  function closeToc() {
+    toc.classList.remove('open');
+    backdrop.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+  toggle.addEventListener('click', function(){
+    toc.classList.contains('open') ? closeToc() : openToc();
+  });
+  backdrop.addEventListener('click', closeToc);
+  toc.addEventListener('click', function(e){
+    if (e.target.tagName === 'A') closeToc();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') closeToc();
+  });
+</script>
+</body>
+</html>
